@@ -20,7 +20,6 @@ public class Subject {
     private String subjectName;
 
     private String subjectProfessor;
-    private int subjectNumber;
     private int subjectTime;
     private int enrolmentGrade;
     private int stockQuantity;
