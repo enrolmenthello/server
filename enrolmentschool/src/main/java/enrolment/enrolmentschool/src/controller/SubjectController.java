@@ -2,28 +2,33 @@ package enrolment.enrolmentschool.src.controller;
 
 import enrolment.enrolmentschool.src.domain.Subject;
 import enrolment.enrolmentschool.src.service.SubjectService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@RequestMapping("/subject")
+@Api(tags="3. member API")
 @Controller
+@Slf4j
 @RequiredArgsConstructor
 public class SubjectController {
 
     private final SubjectService subjectService;
 
+    @ApiOperation(value="과목 폼")
     @GetMapping(value="/subjects/new")
     public String createForm(Model model){
         model.addAttribute("form",new SubjectForm());
         return "subjects/createSubjectForm";
     }
 
+    @ApiOperation(value = "과목 생성")
     @PostMapping(value="/subjects/new")
     public String create(SubjectForm form){
         Subject subject=new Subject();
@@ -41,6 +46,7 @@ public class SubjectController {
     /**
      * 과목 목록
      */
+    @ApiOperation(value="과목 리스트")
     @GetMapping(value="/subjects")
     public String list(Model model){
         List<Subject> subjects=subjectService.findSubject();
@@ -51,6 +57,7 @@ public class SubjectController {
     /**
      * 과목 수정 폼
      */
+    @ApiOperation(value="과목 업데이트")
     @GetMapping(value="/subjects/{subjectId}/edit")
     public String updateSubject(@PathVariable("subjectId")Long subjectId,Model model){
         Subject subject=(Subject) subjectService.findOne(subjectId);
@@ -70,6 +77,7 @@ public class SubjectController {
     /**
      * 과목 수정
      */
+    @ApiOperation(value = "과목 수정")
     @PostMapping(value="/subjects/{subjectId}/edit")
     public String updateSubject(@PathVariable Long subjectId, @ModelAttribute("form") SubjectForm form){
 //        Subject subject=new Subject();
