@@ -16,7 +16,7 @@ import java.util.List;
 public class Subject {
     @Id @GeneratedValue
     @Column(name="subject_id")
-    private Long subjectId;
+    private String subjectId;
     private String subjectName;
 
     private String subjectProfessor;

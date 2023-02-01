@@ -8,11 +8,8 @@ import enrolment.enrolmentschool.src.repository.EnrolmentRepository;
 import enrolment.enrolmentschool.src.repository.MemberRepository;
 import enrolment.enrolmentschool.src.repository.SubjectRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
@@ -24,7 +21,7 @@ public class EnrolmentService {
 
     /**신청**/
     @Transactional
-    public Long enrolment(Long memberId, Long subjectId, int count){
+    public Long enrolment(Long memberId, String subjectId, int count){
 
         //엔티티 조회
         Member member=memberRepository.findOne(memberId);

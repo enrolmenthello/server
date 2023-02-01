@@ -3,7 +3,7 @@ package enrolment.enrolmentschool.src.controller;
 import enrolment.enrolmentschool.src.domain.Member;
 import enrolment.enrolmentschool.src.domain.Subject;
 import enrolment.enrolmentschool.src.service.EnrolmentService;
-import enrolment.enrolmentschool.src.service.MemberService;
+import enrolment.enrolmentschool.src.service.MemberServiceImpl;
 import enrolment.enrolmentschool.src.service.SubjectService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -22,13 +22,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class EnrolmentController {
     private final EnrolmentService enrolmentService;
-    private final MemberService memberService;
+    private final MemberServiceImpl memberServiceImpl;
     private final SubjectService subjectService;
 
     @ApiOperation(value="수강신청 폼")
     @GetMapping(value="/enrolment")
     public String createForm(Model model){
-        List<Member> members=memberService.findMembers();
+        List<Member> members= memberServiceImpl.findMembers();
         List<Subject> subjects=subjectService.findSubject();
 
         model.addAttribute("members",members);
@@ -39,7 +39,7 @@ public class EnrolmentController {
 
     @ApiOperation(value="수강신청 실행")
     @PostMapping(value="/enrolment")
-    public String enrolment(@RequestParam("memberId") Long memberId, @RequestParam("subjectId") Long subjectId,
+    public String enrolment(@RequestParam("memberId") Long memberId, @RequestParam("subjectId") String subjectId,
                             @RequestParam("count") int count){
         enrolmentService.enrolment(memberId, subjectId, count);
         return "redirect:/enrolments";

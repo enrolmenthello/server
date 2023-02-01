@@ -6,7 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class SubjectForm {
-    private Long subjectId;//강좌번호
+    private String subjectId;//강좌번호
     private String subjectName;//과목 이름
 
     private String subjectProfessor;//교수명

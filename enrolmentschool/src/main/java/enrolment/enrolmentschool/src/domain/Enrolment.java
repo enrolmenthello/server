@@ -42,7 +42,7 @@ public  class Enrolment {
         enrolmentSubject.setEnrolment(this);
     }
 
-    public static Enrolment createEnrolment(Member member,EnrolmentSubject... enrolmentSubjects){
+    public static Enrolment createEnrolment(Member member, EnrolmentSubject... enrolmentSubjects){
         Enrolment enrolment=new Enrolment();
         enrolment.setMember(member);
         for(EnrolmentSubject enrolmentSubject : enrolmentSubjects){

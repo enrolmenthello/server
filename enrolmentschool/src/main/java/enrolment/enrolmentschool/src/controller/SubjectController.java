@@ -59,7 +59,7 @@ public class SubjectController {
      */
     @ApiOperation(value="과목 업데이트")
     @GetMapping(value="/subjects/{subjectId}/edit")
-    public String updateSubject(@PathVariable("subjectId")Long subjectId,Model model){
+    public String updateSubject(@PathVariable("subjectId")String subjectId,Model model){
         Subject subject=(Subject) subjectService.findOne(subjectId);
 
         SubjectForm form=new SubjectForm();
@@ -79,7 +79,7 @@ public class SubjectController {
      */
     @ApiOperation(value = "과목 수정")
     @PostMapping(value="/subjects/{subjectId}/edit")
-    public String updateSubject(@PathVariable Long subjectId, @ModelAttribute("form") SubjectForm form){
+    public String updateSubject(@PathVariable String subjectId, @ModelAttribute("form") SubjectForm form){
 //        Subject subject=new Subject();
 //        subject.setSubjectId(form.getSubjectId());
 //        subject.setSubjectName(form.getSubjectName());
