@@ -8,6 +8,7 @@ import enrolment.enrolmentschool.src.exception.NotFoundMemberException;
 import enrolment.enrolmentschool.src.repository.MemberRepository;
 import enrolment.enrolmentschool.src.response.PostMemberResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,7 +17,7 @@ import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
-@RequiredArgsConstructor
+@RequiredArgsConstructor @Slf4j
 public class MemberServiceImpl implements MemberService{
 //    @Autowired
 //    MemberRepository memberRepository;
@@ -49,8 +50,9 @@ public class MemberServiceImpl implements MemberService{
 
         Member joinMember=memberDao.save(createMember);
         return PostMemberResponse.builder()
-                .memberId(joinMember.getId())
-                .memberName(joinMember.getName())
+                .id(joinMember.getId())
+                .name(joinMember.getName())
+                .password(joinMember.getPassword())
                 .build();
     }
 
@@ -78,11 +80,11 @@ public class MemberServiceImpl implements MemberService{
 
     public PostMemberResponse login(PostMemberLoginRequest postMemberLoginRequest) {
         Long id = postMemberLoginRequest.getId();
-        Member loginMember = memberRepository.findOne(id);
+        Member loginMember = memberDao.findById(id).get();
         if (loginMember.getPassword().equals(postMemberLoginRequest.getPassword())) {
             return PostMemberResponse.builder()
-                    .memberId(id)
-                    .memberName(loginMember.getName())
+                    .id(id)
+                    .name(loginMember.getName())
                     .build();
         }else{
             throw new NotFoundMemberException();

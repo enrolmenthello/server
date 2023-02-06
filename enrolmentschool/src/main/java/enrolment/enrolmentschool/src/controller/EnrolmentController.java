@@ -1,14 +1,19 @@
 package enrolment.enrolmentschool.src.controller;
 
+import enrolment.enrolmentschool.src.config.BaseResponse;
 import enrolment.enrolmentschool.src.domain.Member;
 import enrolment.enrolmentschool.src.domain.Subject;
+import enrolment.enrolmentschool.src.response.PostEnrolmentResponse;
 import enrolment.enrolmentschool.src.service.EnrolmentService;
 import enrolment.enrolmentschool.src.service.MemberServiceImpl;
 import enrolment.enrolmentschool.src.service.SubjectService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +31,7 @@ public class EnrolmentController {
     private final SubjectService subjectService;
 
     @ApiOperation(value="수강신청 폼")
-    @GetMapping(value="/enrolment")
+    @GetMapping(value="/enrolment/form")
     public String createForm(Model model){
         List<Member> members= memberServiceImpl.findMembers();
         List<Subject> subjects=subjectService.findSubject();
@@ -38,11 +43,18 @@ public class EnrolmentController {
     }
 
     @ApiOperation(value="수강신청 실행")
-    @PostMapping(value="/enrolment")
-    public String enrolment(@RequestParam("memberId") Long memberId, @RequestParam("subjectId") String subjectId,
-                            @RequestParam("count") int count){
-        enrolmentService.enrolment(memberId, subjectId, count);
-        return "redirect:/enrolments";
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK", response = PostEnrolmentResponse.class)
+    })
+    @GetMapping(value="/enrolment")
+public ResponseEntity<?> enrolment(@RequestParam ("memberId") Long memberId, @RequestParam("subjectId") String subjectId, @RequestParam("count") int count){
+        return ResponseEntity.ok(new BaseResponse(enrolmentService.enrolment(memberId,subjectId,count)));
+
+
+//    public String enrolment(@RequestParam("memberId") Long memberId, @RequestParam("subjectId") String subjectId,
+//                            @RequestParam("count") int count){
+//        enrolmentService.enrolment(memberId, subjectId, count);
+//        return "redirect:/enrolments";
     }
 
     @ApiOperation("수강신청 취소")

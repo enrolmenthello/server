@@ -7,9 +7,13 @@ import enrolment.enrolmentschool.src.domain.Subject;
 import enrolment.enrolmentschool.src.repository.EnrolmentRepository;
 import enrolment.enrolmentschool.src.repository.MemberRepository;
 import enrolment.enrolmentschool.src.repository.SubjectRepository;
+import enrolment.enrolmentschool.src.response.PostEnrolmentResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
@@ -19,10 +23,10 @@ public class EnrolmentService {
     private final EnrolmentRepository enrolmentRepository;
     private final SubjectRepository subjectRepository;
 
-    /**신청**/
-    @Transactional
-    public Long enrolment(Long memberId, String subjectId, int count){
+    /**수강신청**/
+        public List<PostEnrolmentResponse> enrolment(Long memberId, String subjectId, int count){
 
+            List<PostEnrolmentResponse> postEnrolmentResponseList=new ArrayList<>();
         //엔티티 조회
         Member member=memberRepository.findOne(memberId);
         Subject subject=subjectRepository.findOne(subjectId);
@@ -33,10 +37,36 @@ public class EnrolmentService {
         //수강신청 생성
         Enrolment enrolment=Enrolment.createEnrolment(member,enrolmentSubject);
 
-        //수강신청 저장
-        enrolmentRepository.save(enrolment);
-        return enrolment.getEnrolmentId();
+        PostEnrolmentResponse postEnrolmentResponse=PostEnrolmentResponse.builder()
+                .subjectId(subject.getSubjectId())
+                .subjectName(subject.getSubjectName())
+                .enrolmentGrade(subject.getEnrolmentGrade())
+                .subjectProfessor(subject.getSubjectProfessor())
+                .subjectTime(subject.getSubjectTime())
+                        .build();
+        postEnrolmentResponseList.add(postEnrolmentResponse);
+
+            //수강신청 저장
+
+        return postEnrolmentResponseList;
     }
+//    @Transactional
+//    public Long enrolment(Long memberId, String subjectId, int count){
+//
+//        //엔티티 조회
+//        Member member=memberRepository.findOne(memberId);
+//        Subject subject=subjectRepository.findOne(subjectId);
+//
+//        //수강신청과목 생성
+//        EnrolmentSubject enrolmentSubject=EnrolmentSubject.createEnrolmentSubject(subject,subject.getEnrolmentGrade(),count);
+//
+//        //수강신청 생성
+//        Enrolment enrolment=Enrolment.createEnrolment(member,enrolmentSubject);
+//
+//        //수강신청 저장
+//        enrolmentRepository.save(enrolment);
+//        return enrolment.getEnrolmentId();
+//    }
 
     /**수강신청**/
     @Transactional
