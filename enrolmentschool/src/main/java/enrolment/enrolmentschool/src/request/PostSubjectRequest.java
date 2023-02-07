@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 public class PostSubjectRequest {
     @NotEmpty(message="강좌 번호를 ")
-    private String subjectId;//강좌번호
+    private Long subjectId;//강좌번호
     private String subjectName;//과목 이름
 
     private String subjectProfessor;//교수명

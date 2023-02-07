@@ -23,7 +23,7 @@ public class SubjectRepository {
         }
     }
 
-    public Subject findOne(String id){
+    public Subject findOne(Long id){
         return em.find(Subject.class,id);
     }
 

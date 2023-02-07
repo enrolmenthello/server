@@ -3,6 +3,8 @@ package enrolment.enrolmentschool.src.controller;
 import enrolment.enrolmentschool.src.config.BaseResponse;
 import enrolment.enrolmentschool.src.domain.Member;
 import enrolment.enrolmentschool.src.domain.Subject;
+import enrolment.enrolmentschool.src.response.CancelEnrolmentResponse;
+import enrolment.enrolmentschool.src.response.GetEnrolmentResponse;
 import enrolment.enrolmentschool.src.response.PostEnrolmentResponse;
 import enrolment.enrolmentschool.src.service.EnrolmentService;
 import enrolment.enrolmentschool.src.service.MemberServiceImpl;
@@ -20,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequestMapping("/enrolment")
 @Api(tags="1. enrolment API")
 @Slf4j
 @Controller
@@ -30,24 +31,24 @@ public class EnrolmentController {
     private final MemberServiceImpl memberServiceImpl;
     private final SubjectService subjectService;
 
-    @ApiOperation(value="수강신청 폼")
-    @GetMapping(value="/enrolment/form")
-    public String createForm(Model model){
-        List<Member> members= memberServiceImpl.findMembers();
-        List<Subject> subjects=subjectService.findSubject();
-
-        model.addAttribute("members",members);
-        model.addAttribute("subjects",subjects);
-
-        return "enrolment/enrolmentForm";
-    }
+//    @ApiOperation(value="수강신청 폼")
+//    @GetMapping(value="/enrolment/form")
+//    public String createForm(Model model){
+//        List<Member> members= memberServiceImpl.findMembers();
+//        List<Subject> subjects=subjectService.findSubject();
+//
+//        model.addAttribute("members",members);
+//        model.addAttribute("subjects",subjects);
+//
+//        return "enrolment/enrolmentForm";
+//    }
 
     @ApiOperation(value="수강신청 실행")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "OK", response = PostEnrolmentResponse.class)
+            @ApiResponse(code = 200, message = "OK", response = GetEnrolmentResponse.class)
     })
-    @GetMapping(value="/enrolment")
-public ResponseEntity<?> enrolment(@RequestParam ("memberId") Long memberId, @RequestParam("subjectId") String subjectId, @RequestParam("count") int count){
+    @PostMapping(value="/enrolment")
+public ResponseEntity<?> enrolment(@RequestParam ("memberId") Long memberId, @RequestParam("subjectId") Long subjectId, @RequestParam("count") int count){
         return ResponseEntity.ok(new BaseResponse(enrolmentService.enrolment(memberId,subjectId,count)));
 
 
@@ -58,11 +59,15 @@ public ResponseEntity<?> enrolment(@RequestParam ("memberId") Long memberId, @Re
     }
 
     @ApiOperation("수강신청 취소")
-    @PostMapping(value="/enrolments/{enrolmentId}/cancel")
-    public String cancelEnrolment(@PathVariable("enrolmentId") Long enrolmentId){
-        enrolmentService.cancelEnrolment(enrolmentId);
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK", response = CancelEnrolmentResponse.class)
+    })
+        @PostMapping(value="/enrolment/cancel")
+    public  ResponseEntity<?> cancelEnrolment(@RequestParam("enrolmentId") Long enrolmentId){
+        return ResponseEntity.ok(enrolmentService.cancelEnrolment(enrolmentId));
 
-        return "redirect:/enrolments";
+
     }
+
 
 }

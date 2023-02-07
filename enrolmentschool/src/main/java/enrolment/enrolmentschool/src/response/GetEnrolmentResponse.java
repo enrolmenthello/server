@@ -1,6 +1,5 @@
 package enrolment.enrolmentschool.src.response;
 
-import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,8 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PostEnrolmentResponse {
-    @ApiModelProperty(notes = "과목ID", example = "0")
-    private Long enrolmentId;
+public class GetEnrolmentResponse {
+    private String message;
+    private Long memberId;
 }
-

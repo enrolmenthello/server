@@ -29,18 +29,18 @@ import java.util.List;
 public class MemberController {
     private final MemberServiceImpl memberServiceImpl;
 
-    @GetMapping(value="/new")
-    public String createForm(Model model){
-        model.addAttribute("memberForm",new MemberForm());
-        return "members/createMemberForm";
-    }
+//    @GetMapping(value="/new")
+//    public String createForm(Model model){
+//        model.addAttribute("memberForm",new MemberForm());
+//        return "members/createMemberForm";
+//    }
 
     @ApiOperation(value="회원 가입")
     @ApiResponses({
             @ApiResponse(code=200, message="OK", response = PostMemberResponse.class)
     })
     @PostMapping("/join")
-    private ResponseEntity<?> join(@RequestBody @Valid PostMemberJoinRequest postMemberJoinRequest){
+private ResponseEntity<?> join(@RequestBody  PostMemberJoinRequest postMemberJoinRequest){
         return ResponseEntity.ok(new BaseResponse(memberServiceImpl.join(postMemberJoinRequest)));
     }
 
@@ -50,7 +50,7 @@ public class MemberController {
             @ApiResponse(code=200, message="OK", response = PostMemberResponse.class)
     })
     @PostMapping("/login")
-    private ResponseEntity<?> login(@RequestBody @Valid PostMemberLoginRequest postMemberLoginRequest){
+    private ResponseEntity<?> login(@RequestBody  PostMemberLoginRequest postMemberLoginRequest){
         return ResponseEntity.ok(new BaseResponse(memberServiceImpl.login(postMemberLoginRequest)));
     }
 

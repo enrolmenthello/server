@@ -20,7 +20,7 @@ public class SubjectService {
     }
 
     @Transactional
-    public Subject updateSubject(String subjectId, String subjectName, int stockQuantity){//변경 감지 기능 -> 업데이트 칠 부분만 set해서 반환
+    public Subject updateSubject(Long subjectId, String subjectName, int stockQuantity){//변경 감지 기능 -> 업데이트 칠 부분만 set해서 반환
         Subject findSubject=subjectRepository.findOne(subjectId);
 //        findSubject.setSubjectId(param.getSubjectId());
         findSubject.setSubjectName(subjectName);
@@ -35,7 +35,7 @@ public class SubjectService {
         return subjectRepository.findAll();
     }
 
-    public Subject findOne(String subjectId){
+    public Subject findOne(Long subjectId){
         return subjectRepository.findOne(subjectId);
     }
 }

@@ -1,6 +1,7 @@
 package enrolment.enrolmentschool.src.domain;
 
 import enrolment.enrolmentschool.src.exception.NotEnoughStockException;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,14 +10,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+
 @DiscriminatorColumn(name="dtype")
-@Table(name="subjects")
 @Getter @Setter
 public class Subject {
     @Id @GeneratedValue
     @Column(name="subject_id")
-    private String subjectId;
+    private Long subjectId;
     private String subjectName;
 
     private String subjectProfessor;
@@ -24,11 +24,15 @@ public class Subject {
     private int enrolmentGrade;
     private int stockQuantity;
 
-    @OneToMany(mappedBy = "subject",cascade = CascadeType.ALL)
-    private List<EnrolmentSubject> enrolmentSubjects=new ArrayList<>();
+//    @OneToMany(mappedBy = "subject",cascade = CascadeType.ALL)hibernate_sequence
+//    private List<EnrolmentSubject> enrolmentSubjects=new ArrayList<>();
+//enrolments
+//    @OneToMany(mappedBy = "subject",cascade = CascadeType.ALL)
+//    private List<Preload> preloads=new ArrayList<>();
 
-    @OneToMany(mappedBy = "subject",cascade = CascadeType.ALL)
-    private List<Preload> preloads=new ArrayList<>();
+    public Subject() {
+
+    }
 
     //비즈니스 로직//
     public void addStock(int quantity){
@@ -42,5 +46,6 @@ public class Subject {
         }
         this.stockQuantity=restSubject;
     }
+
 
 }

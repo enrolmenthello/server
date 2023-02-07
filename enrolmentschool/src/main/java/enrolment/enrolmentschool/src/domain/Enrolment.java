@@ -1,26 +1,31 @@
 package enrolment.enrolmentschool.src.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name="enrolments")
 @Getter @Setter
+@Builder
+@AllArgsConstructor
 public  class Enrolment {
 
     @Id @GeneratedValue
     @Column(name="enrolment_id")
     private Long enrolmentId;
+
     private String subjectProfessor;
     private int subjectNumber;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="member_id")
-    private Member member;
+    public Member member;
+
+    @OneToOne
+    @JoinColumn(name="subject_id")
+    public Subject subject;
 
 
     @OneToMany(mappedBy = "enrolment",cascade = CascadeType.ALL)
@@ -30,6 +35,9 @@ public  class Enrolment {
     @Enumerated(EnumType.STRING)
     private EnrolmentStatus status;
 
+    public Enrolment() {
+
+    }
 
 
     public void setMember(Member member) {
