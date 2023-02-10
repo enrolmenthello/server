@@ -2,7 +2,9 @@ package enrolment.enrolmentschool.src.service;
 
 import enrolment.enrolmentschool.src.dao.SubjectDao;
 import enrolment.enrolmentschool.src.domain.Subject;
+import enrolment.enrolmentschool.src.domain.SubjectSearch;
 import enrolment.enrolmentschool.src.exception.subject.NotFoundSubjectException;
+import enrolment.enrolmentschool.src.repository.SearchRepository;
 import enrolment.enrolmentschool.src.repository.SubjectRepository;
 import enrolment.enrolmentschool.src.dto.response.GetSubjectResponse;
 import lombok.RequiredArgsConstructor;
@@ -18,8 +20,14 @@ import java.util.List;
 public class SubjectService {
 
     private final SubjectRepository subjectRepository;
+
+    private final SearchRepository searchRepository;
     private final SubjectDao subjectDao;
 
+        /**과목 검색*/
+    public List<Subject> findSubjects(SubjectSearch subjectSearch){
+        return searchRepository.findAllByCriteria(subjectSearch);
+    }
     @Transactional
     public void saveSubject(Subject subject){
         subjectRepository.save(subject);

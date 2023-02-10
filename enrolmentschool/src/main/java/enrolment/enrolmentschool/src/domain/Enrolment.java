@@ -16,9 +16,12 @@ public  class Enrolment {
     @Column(name="enrolment_id")
     private Long enrolmentId;
 
-    private String subjectProfessor;
-    private int subjectNumber;
-    private Long totalGrade;
+    private String name;
+
+    private String professor;
+    private int time;
+    private int gradePoint;
+    private int stockQuantity;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="member_id")

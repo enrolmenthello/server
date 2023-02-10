@@ -1,9 +1,12 @@
 package enrolment.enrolmentschool.src.controller;
 
 import enrolment.enrolmentschool.src.config.BaseResponse;
+import enrolment.enrolmentschool.src.domain.Subject;
+import enrolment.enrolmentschool.src.dto.request.PostEnrolmentRequest;
 import enrolment.enrolmentschool.src.dto.response.CancelEnrolmentResponse;
 import enrolment.enrolmentschool.src.dto.response.GetEnrolmentResponse;
 import enrolment.enrolmentschool.src.dto.response.GetTotalGrade;
+import enrolment.enrolmentschool.src.dto.response.PostEnrolmentResponse;
 import enrolment.enrolmentschool.src.service.EnrolmentService;
 import enrolment.enrolmentschool.src.service.MemberServiceImpl;
 import enrolment.enrolmentschool.src.service.SubjectService;
@@ -38,20 +41,36 @@ public class EnrolmentController {
 //        return "enrolment/enrolmentForm";
 //    }
 
-    @ApiOperation(value="수강신청 실행")
+    /**수강신청 case 1
+     *
+     *
+     */
+//    @ApiOperation(value="수강신청 실행")
+//    @ApiResponses({
+//            @ApiResponse(code = 200, message = "OK", response = GetEnrolmentResponse.class)
+//    })
+//    @PostMapping(value="/enrolment")
+//public ResponseEntity<?> enrolment(@RequestParam ("subjectId") Long subjectId){
+//        return ResponseEntity.ok(new BaseResponse(enrolmentService.enrolment(subjectId)));
+
+    /**수강신청 case 2
+     *
+     *
+     */
+
+        @ApiOperation(value="수강신청 실행")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "OK", response = GetEnrolmentResponse.class)
+            @ApiResponse(code = 200, message = "OK", response = PostEnrolmentResponse.class)
     })
     @PostMapping(value="/enrolment")
-public ResponseEntity<?> enrolment(@RequestParam ("subjectId") Long subjectId){
-        return ResponseEntity.ok(new BaseResponse(enrolmentService.enrolment(subjectId)));
-
-
+public ResponseEntity<?> enrolment(PostEnrolmentRequest postEnrolmentRequest) {
+            return ResponseEntity.ok(new BaseResponse(enrolmentService.enrolment(postEnrolmentRequest)));
+        }
 //    public String enrolment(@RequestParam("memberId") Long memberId, @RequestParam("subjectId") String subjectId,
 //                            @RequestParam("count") int count){
 //        enrolmentService.enrolment(memberId, subjectId, count);
 //        return "redirect:/enrolments";
-    }
+//}
 
     @ApiOperation("수강신청 취소")
     @ApiResponses({

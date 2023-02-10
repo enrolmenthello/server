@@ -11,7 +11,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class PostEnrolmentResponse {
-    @ApiModelProperty(notes = "과목ID", example = "0")
+    @ApiModelProperty(example = "수강신청이 완료되었습니다.")
+    private String message;
     private Long enrolmentId;
+
+    private String name;
+
+    private String professor;
+    private int time;
+    private int gradePoint;
+    private int stockQuantity;
+
 }
 

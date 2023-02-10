@@ -2,15 +2,18 @@ package enrolment.enrolmentschool.src.domain;
 
 import enrolment.enrolmentschool.src.exception.NotEnoughStockException;
 import enrolment.enrolmentschool.src.dto.request.PostSubjectRequest;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 
-@Entity
 
-@DiscriminatorColumn(name="dtype")
+@Entity
+@Builder
 @Getter @Setter
+@AllArgsConstructor
 public class Subject {
     @Id @GeneratedValue
     @Column(name="subject_id")

@@ -1,6 +1,7 @@
 package enrolment.enrolmentschool.src.controller;
 
 import enrolment.enrolmentschool.src.config.BaseResponse;
+import enrolment.enrolmentschool.src.domain.SubjectSearch;
 import enrolment.enrolmentschool.src.dto.response.GetSubjectResponse;
 import enrolment.enrolmentschool.src.service.SubjectService;
 import io.swagger.annotations.*;
@@ -71,6 +72,15 @@ public class SubjectController {
         return ResponseEntity.ok(new BaseResponse(subjectService.getSubject(id)));
     }
 
+    @ApiOperation(value = "과목 검색하기")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK", response = GetSubjectResponse.class)
+    })
+    @GetMapping("/subject/search")
+    private ResponseEntity<?> getSubject(@RequestParam("subjectSearch") @ApiParam(value = "과목 이름",example = "0", defaultValue = "융소") SubjectSearch subjectSearch)  {
+        return ResponseEntity.ok(new BaseResponse(subjectService.findSubjects(subjectSearch)));
+    }
+
     /**
      * 과목 수정 폼
      */
@@ -109,6 +119,7 @@ public class SubjectController {
 //        return "redirect:/subjects";
 //
 //    }
+
 
 
 
