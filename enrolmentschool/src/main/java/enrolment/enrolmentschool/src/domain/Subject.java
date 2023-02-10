@@ -1,13 +1,11 @@
 package enrolment.enrolmentschool.src.domain;
 
 import enrolment.enrolmentschool.src.exception.NotEnoughStockException;
-import lombok.Builder;
+import enrolment.enrolmentschool.src.dto.request.PostSubjectRequest;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 
@@ -16,12 +14,12 @@ import java.util.List;
 public class Subject {
     @Id @GeneratedValue
     @Column(name="subject_id")
-    private Long subjectId;
-    private String subjectName;
+    private Long id;
+    private String name;
 
-    private String subjectProfessor;
-    private int subjectTime;
-    private int enrolmentGrade;
+    private String professor;
+    private int time;
+    private int gradePoint;
     private int stockQuantity;
 
 //    @OneToMany(mappedBy = "subject",cascade = CascadeType.ALL)hibernate_sequence
@@ -32,6 +30,15 @@ public class Subject {
 
     public Subject() {
 
+    }
+
+
+    public void set(PostSubjectRequest postSubjectRequest) {
+        this.id = postSubjectRequest.getId();
+        this.name = postSubjectRequest.getName();
+        this.professor = postSubjectRequest.getProfessor();
+        this.gradePoint = postSubjectRequest.getGradePoint();
+        this.time = postSubjectRequest.getTime();
     }
 
     //비즈니스 로직//
@@ -46,6 +53,8 @@ public class Subject {
         }
         this.stockQuantity=restSubject;
     }
+
+
 
 
 }

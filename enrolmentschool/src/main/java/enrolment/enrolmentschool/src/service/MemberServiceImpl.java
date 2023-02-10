@@ -2,11 +2,11 @@ package enrolment.enrolmentschool.src.service;
 
 import enrolment.enrolmentschool.src.dao.MemberDao;
 import enrolment.enrolmentschool.src.domain.Member;
-import enrolment.enrolmentschool.src.request.PostMemberJoinRequest;
-import enrolment.enrolmentschool.src.request.PostMemberLoginRequest;
-import enrolment.enrolmentschool.src.exception.NotFoundMemberException;
+import enrolment.enrolmentschool.src.dto.request.PostMemberJoinRequest;
+import enrolment.enrolmentschool.src.dto.request.PostMemberLoginRequest;
+import enrolment.enrolmentschool.src.exception.member.NotFoundMemberException;
 import enrolment.enrolmentschool.src.repository.MemberRepository;
-import enrolment.enrolmentschool.src.response.PostMemberResponse;
+import enrolment.enrolmentschool.src.dto.response.PostMemberResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

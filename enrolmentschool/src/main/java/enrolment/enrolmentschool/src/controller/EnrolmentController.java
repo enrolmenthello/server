@@ -1,11 +1,9 @@
 package enrolment.enrolmentschool.src.controller;
 
 import enrolment.enrolmentschool.src.config.BaseResponse;
-import enrolment.enrolmentschool.src.domain.Member;
-import enrolment.enrolmentschool.src.domain.Subject;
-import enrolment.enrolmentschool.src.response.CancelEnrolmentResponse;
-import enrolment.enrolmentschool.src.response.GetEnrolmentResponse;
-import enrolment.enrolmentschool.src.response.PostEnrolmentResponse;
+import enrolment.enrolmentschool.src.dto.response.CancelEnrolmentResponse;
+import enrolment.enrolmentschool.src.dto.response.GetEnrolmentResponse;
+import enrolment.enrolmentschool.src.dto.response.GetTotalGrade;
 import enrolment.enrolmentschool.src.service.EnrolmentService;
 import enrolment.enrolmentschool.src.service.MemberServiceImpl;
 import enrolment.enrolmentschool.src.service.SubjectService;
@@ -17,10 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Api(tags="1. enrolment API")
 @Slf4j
@@ -48,8 +43,8 @@ public class EnrolmentController {
             @ApiResponse(code = 200, message = "OK", response = GetEnrolmentResponse.class)
     })
     @PostMapping(value="/enrolment")
-public ResponseEntity<?> enrolment(@RequestParam ("memberId") Long memberId, @RequestParam("subjectId") Long subjectId, @RequestParam("count") int count){
-        return ResponseEntity.ok(new BaseResponse(enrolmentService.enrolment(memberId,subjectId,count)));
+public ResponseEntity<?> enrolment(@RequestParam ("subjectId") Long subjectId){
+        return ResponseEntity.ok(new BaseResponse(enrolmentService.enrolment(subjectId)));
 
 
 //    public String enrolment(@RequestParam("memberId") Long memberId, @RequestParam("subjectId") String subjectId,
@@ -68,6 +63,17 @@ public ResponseEntity<?> enrolment(@RequestParam ("memberId") Long memberId, @Re
 
 
     }
+
+//    @ApiOperation("총 수강신청 학점 조회")
+//    @ApiResponses({
+//            @ApiResponse(code = 200, message = "OK", response = GetTotalGrade.class)
+//    })
+//    @PostMapping(value="/enrolment/total")
+//    public  ResponseEntity<?> totalGrade(@RequestParam("enrolmentId") Long enrolmentId){
+//        return ResponseEntity.ok(enrolmentService.totalGrade(enrolmentId));
+//
+//
+//    }
 
 
 }

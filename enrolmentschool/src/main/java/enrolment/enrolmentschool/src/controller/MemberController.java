@@ -2,10 +2,10 @@ package enrolment.enrolmentschool.src.controller;
 
 import enrolment.enrolmentschool.src.config.BaseResponse;
 import enrolment.enrolmentschool.src.domain.Member;
-import enrolment.enrolmentschool.src.request.PostMemberJoinRequest;
-import enrolment.enrolmentschool.src.request.PostMemberLoginRequest;
+import enrolment.enrolmentschool.src.dto.request.PostMemberJoinRequest;
+import enrolment.enrolmentschool.src.dto.request.PostMemberLoginRequest;
 import enrolment.enrolmentschool.src.service.MemberServiceImpl;
-import enrolment.enrolmentschool.src.response.PostMemberResponse;
+import enrolment.enrolmentschool.src.dto.response.PostMemberResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @Api(tags="2. member API")
