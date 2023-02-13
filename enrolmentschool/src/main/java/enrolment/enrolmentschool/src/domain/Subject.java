@@ -36,13 +36,13 @@ public class Subject {
     }
 
 
-    public void set(PostSubjectRequest postSubjectRequest) {
-        this.id = postSubjectRequest.getId();
-        this.name = postSubjectRequest.getName();
-        this.professor = postSubjectRequest.getProfessor();
-        this.gradePoint = postSubjectRequest.getGradePoint();
-        this.time = postSubjectRequest.getTime();
-    }
+//    public void set(PostSubjectRequest postSubjectRequest) {
+//        this.id = postSubjectRequest.getId();
+//        this.name = postSubjectRequest.getName();
+//        this.professor = postSubjectRequest.getProfessor();
+//        this.gradePoint = postSubjectRequest.getGradePoint();
+//        this.time = postSubjectRequest.getTime();
+//    }
 
     //비즈니스 로직//
     public void addStock(int quantity){

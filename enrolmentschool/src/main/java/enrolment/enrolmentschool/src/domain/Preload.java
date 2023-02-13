@@ -1,5 +1,6 @@
 package enrolment.enrolmentschool.src.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,13 +9,19 @@ import javax.persistence.*;
 
 @Entity
 @Getter @Setter
+@Builder
+@AllArgsConstructor
 public  class Preload {
 
     @Id @GeneratedValue
     @Column(name="preload_id")
-    private Long enrolmentId;
-    private String subjectProfessor;
-    private int subjectNumber;
+    private Long preloadId;
+    private String name;
+
+    private String professor;
+    private int time;
+    private int gradePoint;
+    private int stockQuantity;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="member_id")
@@ -24,8 +31,8 @@ public  class Preload {
     @JoinColumn(name="subject_id")
     private Subject subject;
 
-    @Enumerated(EnumType.STRING)
-    private EnrolmentStatus status;
+//    @Enumerated(EnumType.STRING)
+//    private EnrolmentStatus status;
 
     public Preload(){
 

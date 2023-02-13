@@ -1,10 +1,10 @@
 package enrolment.enrolmentschool.src.controller;
 
 import enrolment.enrolmentschool.src.config.BaseResponse;
-import enrolment.enrolmentschool.src.dto.response.CancelEnrolmentResponse;
+import enrolment.enrolmentschool.src.domain.Member;
+import enrolment.enrolmentschool.src.domain.Subject;
 import enrolment.enrolmentschool.src.dto.response.CancelPreloadResponse;
-import enrolment.enrolmentschool.src.dto.response.GetEnrolmentResponse;
-import enrolment.enrolmentschool.src.dto.response.GetPreloadResponse;
+import enrolment.enrolmentschool.src.dto.response.PostPreloadResponse;
 import enrolment.enrolmentschool.src.service.PreloadService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -26,11 +26,11 @@ public class PreLoadController {
 
     @ApiOperation(value="미리담기 실행")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "OK", response = GetPreloadResponse.class)
+            @ApiResponse(code = 200, message = "OK", response = PostPreloadResponse.class)
     })
     @PostMapping(value="/preload")
-    public ResponseEntity<?> preload(@RequestParam("subjectId") Long subjectId) {
-        return ResponseEntity.ok(new BaseResponse(preloadService.preload(subjectId)));
+    public ResponseEntity<?> preload(@RequestParam("memberId") Member member, @RequestParam("subjectId") Subject subject) {
+        return ResponseEntity.ok(new BaseResponse(preloadService.preload(member,subject)));
     }
 
     @ApiOperation("미리담기 취소")
@@ -38,8 +38,8 @@ public class PreLoadController {
             @ApiResponse(code = 200, message = "OK", response = CancelPreloadResponse.class)
     })
     @PostMapping(value="/preload/cancel")
-    public  ResponseEntity<?> cancelPreload(@RequestParam("enrolmentId") Long enrolmentId){
-        return ResponseEntity.ok(preloadService.cancelPreload(enrolmentId));
+    public  ResponseEntity<?> cancelPreload(@RequestParam("preloadId") Long preloadId){
+        return ResponseEntity.ok(preloadService.cancelPreload(preloadId));
 
 
     }

@@ -20,7 +20,7 @@ import java.util.Vector;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PostSubjectRequest {
-    private Long id;
+    private String id;
     private String name;
 
     private String professor;

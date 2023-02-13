@@ -14,6 +14,7 @@ import enrolment.enrolmentschool.src.dto.response.GetTotalGrade;
 import enrolment.enrolmentschool.src.dto.response.PostEnrolmentResponse;
 import enrolment.enrolmentschool.src.exception.enrolment.FailedEnrolmentSaveException;
 import enrolment.enrolmentschool.src.exception.member.NotFoundMemberException;
+import enrolment.enrolmentschool.src.exception.preload.FailedPreloadSaveException;
 import enrolment.enrolmentschool.src.exception.subject.NotFoundSubjectException;
 import enrolment.enrolmentschool.src.repository.EnrolmentRepository;
 import enrolment.enrolmentschool.src.repository.MemberRepository;
@@ -104,13 +105,13 @@ public class EnrolmentService {
      * case2
      */
     @Transactional
-    public PostEnrolmentResponse enrolment(PostEnrolmentRequest postEnrolmentRequest) {
-        Optional<Member> member = memberDao.findById(postEnrolmentRequest.getMemberId());
+    public PostEnrolmentResponse enrolment(Member memberId, Subject subjectId) {
+        Optional<Member> member = memberDao.findById(memberId.getId());
         if (member.isEmpty()) {
             throw new NotFoundMemberException();
         }
 
-        Subject subject=saveSubject(postEnrolmentRequest);
+        Subject subject=saveSubject(subjectId);
 
         try{
             Enrolment enrolment=Enrolment.builder()
@@ -134,20 +135,20 @@ public class EnrolmentService {
                     .enrolmentId(enrolment.getEnrolmentId())
                     .build();
         }catch (Exception e){
-            throw new FailedEnrolmentSaveException();
+            throw new FailedPreloadSaveException();
 
         }
 
     }
 
-    private Subject saveSubject(PostEnrolmentRequest postEnrolmentRequest){
+    private Subject saveSubject(Subject subjectId){
         Subject subject=Subject.builder()
-                .id(postEnrolmentRequest.getId())
-                .name(postEnrolmentRequest.getName())
-                .professor(postEnrolmentRequest.getProfessor())
-                .gradePoint(postEnrolmentRequest.getGradePoint())
-                .stockQuantity(postEnrolmentRequest.getStockQuantity())
-                .time(postEnrolmentRequest.getTime())
+                .id(subjectId.getId())
+                .name(subjectId.getName())
+                .professor(subjectId.getProfessor())
+                .gradePoint(subjectId.getGradePoint())
+                .stockQuantity(subjectId.getStockQuantity())
+                .time(subjectId.getTime())
                 .build();
         subjectDao.save(subject);
         return subject;

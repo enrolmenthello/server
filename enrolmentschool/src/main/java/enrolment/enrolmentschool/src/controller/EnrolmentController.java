@@ -1,6 +1,7 @@
 package enrolment.enrolmentschool.src.controller;
 
 import enrolment.enrolmentschool.src.config.BaseResponse;
+import enrolment.enrolmentschool.src.domain.Member;
 import enrolment.enrolmentschool.src.domain.Subject;
 import enrolment.enrolmentschool.src.dto.request.PostEnrolmentRequest;
 import enrolment.enrolmentschool.src.dto.response.CancelEnrolmentResponse;
@@ -63,8 +64,8 @@ public class EnrolmentController {
             @ApiResponse(code = 200, message = "OK", response = PostEnrolmentResponse.class)
     })
     @PostMapping(value="/enrolment")
-public ResponseEntity<?> enrolment(PostEnrolmentRequest postEnrolmentRequest) {
-            return ResponseEntity.ok(new BaseResponse(enrolmentService.enrolment(postEnrolmentRequest)));
+public ResponseEntity<?> enrolment(@RequestParam("memberId") Member member,@RequestParam("subjectId") Subject subject) {
+            return ResponseEntity.ok(new BaseResponse(enrolmentService.enrolment(member,subject)));
         }
 //    public String enrolment(@RequestParam("memberId") Long memberId, @RequestParam("subjectId") String subjectId,
 //                            @RequestParam("count") int count){

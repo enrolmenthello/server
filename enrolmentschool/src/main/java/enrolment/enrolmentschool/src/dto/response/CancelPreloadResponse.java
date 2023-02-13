@@ -8,5 +8,5 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CancelPreloadResponse {
     private String message;
-    private Long preloadId;
+
 }

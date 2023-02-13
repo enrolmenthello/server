@@ -5,12 +5,12 @@ import enrolment.enrolmentschool.src.dao.MemberDao;
 import enrolment.enrolmentschool.src.dao.PreloadDao;
 import enrolment.enrolmentschool.src.dao.SubjectDao;
 import enrolment.enrolmentschool.src.domain.Enrolment;
+import enrolment.enrolmentschool.src.domain.Member;
 import enrolment.enrolmentschool.src.domain.Preload;
 import enrolment.enrolmentschool.src.domain.Subject;
-import enrolment.enrolmentschool.src.dto.response.CancelEnrolmentResponse;
-import enrolment.enrolmentschool.src.dto.response.CancelPreloadResponse;
-import enrolment.enrolmentschool.src.dto.response.GetEnrolmentResponse;
-import enrolment.enrolmentschool.src.dto.response.GetPreloadResponse;
+import enrolment.enrolmentschool.src.dto.response.*;
+import enrolment.enrolmentschool.src.exception.enrolment.FailedEnrolmentSaveException;
+import enrolment.enrolmentschool.src.exception.member.NotFoundMemberException;
 import enrolment.enrolmentschool.src.exception.subject.NotFoundSubjectException;
 import enrolment.enrolmentschool.src.repository.EnrolmentRepository;
 import enrolment.enrolmentschool.src.repository.MemberRepository;
@@ -19,6 +19,7 @@ import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,42 +38,41 @@ public class PreloadService {
 
     private final SubjectDao subjectDao;
 
-
-    public List<GetPreloadResponse> preload(Long subjectId) {
-        List<GetPreloadResponse> getPreloadResponses = new ArrayList<>();
-
-
-        //엔티티 조회
-        Optional<Subject> subject = subjectDao.findById(subjectId);
-        if (subject.isEmpty()) {
-            throw new NotFoundSubjectException();
+    @Transactional
+    public PostPreloadResponse preload(Member memberId, Subject subjectId) {
+        Optional<Member> member = memberDao.findById(memberId.getId());
+        if (member.isEmpty()) {
+            throw new NotFoundMemberException();
         }
-        List<Preload> preload = preloadDao.findBySubject(subject.get());
-        if (preload.size() == 0) {
-            GetPreloadResponse getPreloadResponse = GetPreloadResponse.builder()
-                    .message("미리담기한 과목이 없다.")
+
+        Subject subject=saveSubject(subjectId);
+
+        try{
+            Preload preload=Preload.builder()
+                    .subject(subject)
+                    .member(member.get())
+                    .professor(subject.getProfessor())
+                    .name(subject.getName())
+                    .time(subject.getTime())
+                    .stockQuantity(subject.getStockQuantity())
+                    .gradePoint(subject.getGradePoint())
                     .build();
-            getPreloadResponses.add(getPreloadResponse);
-            return getPreloadResponses;
-        }
-        if(preload.size()!=0){
-            for(int i=0;i<preload.size();i++){
-                GetPreloadResponse getPreloadResponse=GetPreloadResponse.of(preload.get(i));
-                getPreloadResponses.add(getPreloadResponse);
-            }
-        }
-        return getPreloadResponses;
-        //수강신청과목 생성
-//        EnrolmentSubject enrolmentSubject= EnrolmentSubject.createEnrolmentSubject(subject,subject.getGradePoint());
+            preloadDao.save(preload);
 
-        //수강신청 생성
-//        Enrolment enrolment=Enrolment.createEnrolment(member,enrolmentSubject);
+            return PostPreloadResponse.builder()
+                    .message("미리담기가 완료되었습니다.")
+                    .professor(subject.getProfessor())
+                    .gradePoint(subject.getGradePoint())
+                    .name(subject.getName())
+                    .time(subject.getTime())
+                    .stockQuantity(subject.getStockQuantity())
+                    .preloadId(preload.getPreloadId())
+                    .build();
+        }catch (Exception e){
+            throw new FailedEnrolmentSaveException();
 
-        //수강신청 저장
-//        enrolmentRepository.save(enrolment);
-//        return GetEnrolmentResponse.builder()
-//                .message("수강신청이 완료되었습니다")
-//                .build();
+        }
+
     }
 
     public CancelPreloadResponse cancelPreload(Long preloadId) {
@@ -84,5 +84,18 @@ public class PreloadService {
         return CancelPreloadResponse.builder()
                 .message("해당 과목을 취소 했습니다")
                 .build();
+    }
+
+    private Subject saveSubject(Subject subjectId){
+        Subject subject=Subject.builder()
+                .id(subjectId.getId())
+                .name(subjectId.getName())
+                .professor(subjectId.getProfessor())
+                .gradePoint(subjectId.getGradePoint())
+                .stockQuantity(subjectId.getStockQuantity())
+                .time(subjectId.getTime())
+                .build();
+        subjectDao.save(subject);
+        return subject;
     }
 }

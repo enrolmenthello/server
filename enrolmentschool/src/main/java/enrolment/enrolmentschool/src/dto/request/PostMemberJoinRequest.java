@@ -13,8 +13,8 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PostMemberJoinRequest {
-    @NotNull(message="학번을 입력해주세요.")
-    private Long id;
+    @NotEmpty(message="학번을 입력해주세요.")
+    private String id;
 
     @NotEmpty(message="비밀 번호를 입력해주세요.")
     private String password;

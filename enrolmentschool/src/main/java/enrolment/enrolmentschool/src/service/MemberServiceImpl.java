@@ -35,11 +35,10 @@ public class MemberServiceImpl implements MemberService{
      * 회원가입
      **/
 
-    @Override
+    @Transactional
     public PostMemberResponse join(PostMemberJoinRequest postMemberJoinRequest) {
 //        validateDuplicateMember(postMemberJoinRequest);//중복 검증
-        Long memberId= postMemberJoinRequest.getId();
-
+        Long  memberId= Long.parseLong(postMemberJoinRequest.getId());
 
 
         Member createMember=Member.builder()
@@ -56,12 +55,7 @@ public class MemberServiceImpl implements MemberService{
                 .build();
     }
 
-    private void validateDuplicateMember(PostMemberJoinRequest postMemberJoinRequest) {
-        Optional<Member> findMmebers = memberDao.findById(postMemberJoinRequest.getId());
-        if (!findMmebers.isEmpty()) {
-            throw new IllegalStateException("이미 존재하는 회원입니다.");
-        }
-    }
+
 
     /**
      * 전체 회원 조회

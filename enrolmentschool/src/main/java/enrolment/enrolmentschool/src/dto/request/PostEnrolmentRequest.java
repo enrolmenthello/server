@@ -19,20 +19,20 @@ public class PostEnrolmentRequest {
     @ApiParam(value= "과목 ID", example = "0")
     private Long id;
 
-    @ApiParam(value= "과목 이름", example = "0")
-    private String name;
-
-    @ApiParam(value= "과목 교수", example = "0")
-    private String professor;
-
-    @ApiParam(value= "과목 시간", example = "0")
-    private int time;
-
-    @ApiParam(value= "과목 학점", example = "0")
-    private int gradePoint;
-
-    @ApiParam(value= "과목 수", example = "0")
-    private int stockQuantity;
+//    @ApiParam(value= "과목 이름", example = "0")
+//    private String name;
+//
+//    @ApiParam(value= "과목 교수", example = "0")
+//    private String professor;
+//
+//    @ApiParam(value= "과목 시간", example = "0")
+//    private int time;
+//
+//    @ApiParam(value= "과목 학점", example = "0")
+//    private int gradePoint;
+//
+//    @ApiParam(value= "과목 수", example = "0")
+//    private int stockQuantity;
 
 
 
