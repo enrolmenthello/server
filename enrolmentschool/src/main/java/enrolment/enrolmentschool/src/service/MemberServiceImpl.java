@@ -38,7 +38,7 @@ public class MemberServiceImpl implements MemberService{
      * 회원가입
      **/
 
-@Transactional
+
     public PostMemberResponse join(PostMemberJoinRequest postMemberJoinRequest) {
 //        validateDuplicateMember(postMemberJoinRequest);//중복 검증
         String  memberId= postMemberJoinRequest.getId();
@@ -56,7 +56,7 @@ public class MemberServiceImpl implements MemberService{
                 .password(joinMember.getPassword())
                 .build();
     }
-@Transactional
+
     public boolean checkJoin(PostMemberCheckRequest postMemberCheckRequest) {
         String  checkId= postMemberCheckRequest.getId();
         Member checkMember=memberDao.findById(checkId).orElseThrow(()->new NotFoundMemberException());
