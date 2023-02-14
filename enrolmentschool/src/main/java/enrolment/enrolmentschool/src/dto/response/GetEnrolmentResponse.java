@@ -13,7 +13,7 @@ public class GetEnrolmentResponse {
     private String message;
 
     private Long enrolmentId;
-    private Long memberId;
+    private String memberId;
     private Long subjectId;
     private String subjectName;
 

@@ -5,6 +5,7 @@ import enrolment.enrolmentschool.src.domain.Member;
 import enrolment.enrolmentschool.src.dto.request.PostMemberJoinRequest;
 import enrolment.enrolmentschool.src.dto.request.PostMemberLoginRequest;
 import enrolment.enrolmentschool.src.exception.member.NotFoundMemberException;
+import enrolment.enrolmentschool.src.exception.member.NotJoinMemberException;
 import enrolment.enrolmentschool.src.repository.MemberRepository;
 import enrolment.enrolmentschool.src.dto.response.PostMemberResponse;
 import lombok.RequiredArgsConstructor;
@@ -35,10 +36,17 @@ public class MemberServiceImpl implements MemberService{
      * 회원가입
      **/
 
-    @Transactional
+
     public PostMemberResponse join(PostMemberJoinRequest postMemberJoinRequest) {
 //        validateDuplicateMember(postMemberJoinRequest);//중복 검증
-        Long  memberId= Long.parseLong(postMemberJoinRequest.getId());
+        String  memberId= postMemberJoinRequest.getId();
+        Member joinId=memberDao.findById(memberId).get();
+        if(joinId.getId().equals(postMemberJoinRequest.getId())){
+            throw new NotJoinMemberException();
+        }
+
+
+
 
 
         Member createMember=Member.builder()
@@ -73,7 +81,7 @@ public class MemberServiceImpl implements MemberService{
      * 회원 로그인인     */
 
     public PostMemberResponse login(PostMemberLoginRequest postMemberLoginRequest) {
-        Long id = postMemberLoginRequest.getId();
+        String id = postMemberLoginRequest.getId();
         Member loginMember = memberDao.findById(id).get();
         if (loginMember.getPassword().equals(postMemberLoginRequest.getPassword())) {
             return PostMemberResponse.builder()
@@ -86,8 +94,6 @@ public class MemberServiceImpl implements MemberService{
 
 
     }
-
-
 
 
 }

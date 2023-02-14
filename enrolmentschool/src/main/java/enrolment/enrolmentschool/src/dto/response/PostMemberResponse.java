@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Builder
 public class PostMemberResponse {
-    private Long id;
+    private String id;
 
     private String password;
 

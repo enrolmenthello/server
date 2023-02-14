@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;;
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ import java.util.List;
 public class Member {
     @Id @GeneratedValue
     @Column(name="member_id")
-    private Long id;
+    private String id;
 
     private String name;
     private String password;
