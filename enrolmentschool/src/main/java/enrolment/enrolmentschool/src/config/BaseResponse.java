@@ -20,6 +20,7 @@ public class BaseResponse<T> {
     private final HttpStatus httpStatus;
     private final String message;
 
+
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private T result;
 
@@ -30,6 +31,8 @@ public class BaseResponse<T> {
         this.message = SUCCESS.getMessage();
         this.result = result;
     }
+
+
 
     // 요청 실패
     public BaseResponse(int code, HttpStatus httpStatus, String message){

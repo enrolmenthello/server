@@ -2,8 +2,10 @@ package enrolment.enrolmentschool.src.service;
 
 import enrolment.enrolmentschool.src.dao.MemberDao;
 import enrolment.enrolmentschool.src.domain.Member;
+import enrolment.enrolmentschool.src.dto.request.PostMemberCheckRequest;
 import enrolment.enrolmentschool.src.dto.request.PostMemberJoinRequest;
 import enrolment.enrolmentschool.src.dto.request.PostMemberLoginRequest;
+import enrolment.enrolmentschool.src.dto.response.PostMemberCheckResponse;
 import enrolment.enrolmentschool.src.exception.member.NotFoundMemberException;
 import enrolment.enrolmentschool.src.exception.member.NotJoinMemberException;
 import enrolment.enrolmentschool.src.repository.MemberRepository;
@@ -36,18 +38,10 @@ public class MemberServiceImpl implements MemberService{
      * 회원가입
      **/
 
-
+@Transactional
     public PostMemberResponse join(PostMemberJoinRequest postMemberJoinRequest) {
 //        validateDuplicateMember(postMemberJoinRequest);//중복 검증
         String  memberId= postMemberJoinRequest.getId();
-        Member joinId=memberDao.findById(memberId).get();
-        if(joinId.getId().equals(postMemberJoinRequest.getId())){
-            throw new NotJoinMemberException();
-        }
-
-
-
-
 
         Member createMember=Member.builder()
                 .id(memberId)
@@ -61,6 +55,16 @@ public class MemberServiceImpl implements MemberService{
                 .name(joinMember.getName())
                 .password(joinMember.getPassword())
                 .build();
+    }
+@Transactional
+    public boolean checkJoin(PostMemberCheckRequest postMemberCheckRequest) {
+        String  checkId= postMemberCheckRequest.getId();
+        Member checkMember=memberDao.findById(checkId).orElseThrow(()->new NotFoundMemberException());
+        if(checkId.equals(checkMember.getId())){
+            return false;
+        }else {
+            return true;
+        }
     }
 
 
@@ -94,6 +98,7 @@ public class MemberServiceImpl implements MemberService{
 
 
     }
+
 
 
 }

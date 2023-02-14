@@ -15,7 +15,7 @@ import java.util.List;
 @Entity
 @Getter @Setter
 public class Member {
-    @Id @GeneratedValue
+    @Id
     @Column(name="member_id")
     private String id;
 

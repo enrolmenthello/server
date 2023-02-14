@@ -2,8 +2,10 @@ package enrolment.enrolmentschool.src.controller;
 
 import enrolment.enrolmentschool.src.config.BaseResponse;
 import enrolment.enrolmentschool.src.domain.Member;
+import enrolment.enrolmentschool.src.dto.request.PostMemberCheckRequest;
 import enrolment.enrolmentschool.src.dto.request.PostMemberJoinRequest;
 import enrolment.enrolmentschool.src.dto.request.PostMemberLoginRequest;
+import enrolment.enrolmentschool.src.dto.response.PostMemberCheckResponse;
 import enrolment.enrolmentschool.src.service.MemberServiceImpl;
 import enrolment.enrolmentschool.src.dto.response.PostMemberResponse;
 import io.swagger.annotations.Api;
@@ -38,6 +40,15 @@ public class MemberController {
     @PostMapping("/join")
 private ResponseEntity<?> join(@RequestBody  PostMemberJoinRequest postMemberJoinRequest){
         return ResponseEntity.ok(new BaseResponse(memberServiceImpl.join(postMemberJoinRequest)));
+    }
+
+    @ApiOperation(value="회원 아이디 중복확인")
+    @ApiResponses({
+            @ApiResponse(code=200, message="OK", response = boolean.class)
+    })
+    @PostMapping("/join/check")
+    private ResponseEntity<?> checkJoin(@RequestBody PostMemberCheckRequest postMemberCheckRequest){
+        return ResponseEntity.ok(new BaseResponse(memberServiceImpl.checkJoin(postMemberCheckRequest)));
     }
 
 

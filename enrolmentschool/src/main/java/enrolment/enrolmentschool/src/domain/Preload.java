@@ -13,7 +13,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 public  class Preload {
 
-    @Id @GeneratedValue
+    @Id
     @Column(name="preload_id")
     private Long preloadId;
     private String name;
