@@ -63,23 +63,23 @@ public class SubjectController {
     /**
      * - 과목 상세보기
      * */
-    @ApiOperation(value = "과목 상세보기")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "OK", response = GetSubjectResponse.class)
-    })
-    @GetMapping("/subject/detail")
-    private ResponseEntity<?> getSubject(@RequestParam("id") @ApiParam(value = "과목 번호",example = "0", defaultValue = "1111") long id)  {
-        return ResponseEntity.ok(new BaseResponse(subjectService.getSubject(id)));
-    }
-
     @ApiOperation(value = "과목 검색하기")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK", response = GetSubjectResponse.class)
     })
     @GetMapping("/subject/search")
-    private ResponseEntity<?> getSubject(@RequestParam("subjectSearch") @ApiParam(value = "과목 이름",example = "0", defaultValue = "융소") SubjectSearch subjectSearch)  {
-        return ResponseEntity.ok(new BaseResponse(subjectService.findSubjects(subjectSearch)));
+    private ResponseEntity<?> getSubject(@RequestParam("id") @ApiParam(value = "과목 번호",example = "0", defaultValue = "1111") long id)  {
+        return ResponseEntity.ok(new BaseResponse(subjectService.getSubject(id)));
     }
+
+//    @ApiOperation(value = "과목 검색하기")
+//    @ApiResponses({
+//            @ApiResponse(code = 200, message = "OK", response = GetSubjectResponse.class)
+//    })
+//    @GetMapping("/subject/search")
+//    private ResponseEntity<?> getSubject(@RequestParam("subjectSearch") @ApiParam(value = "과목 이름",example = "0", defaultValue = "융소") SubjectSearch subjectSearch)  {
+//        return ResponseEntity.ok(new BaseResponse(subjectService.findSubjects(subjectSearch)));
+//    }
 
     /**
      * 과목 수정 폼
