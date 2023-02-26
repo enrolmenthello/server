@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalTime;
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,7 +20,7 @@ public class PostEnrolmentResponse {
     private String name;
 
     private String professor;
-    private int time;
+    private LocalTime time;
     private int gradePoint;
     private int stockQuantity;
 

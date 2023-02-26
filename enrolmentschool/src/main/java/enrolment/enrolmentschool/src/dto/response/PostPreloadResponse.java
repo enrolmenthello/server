@@ -3,6 +3,8 @@ package enrolment.enrolmentschool.src.dto.response;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
+import java.time.LocalTime;
+
 @Getter
 @AllArgsConstructor
 @Builder
@@ -15,7 +17,7 @@ public class PostPreloadResponse {
     private String name;
 
     private String professor;
-    private int time;
+    private LocalTime time;
     private int gradePoint;
     private int stockQuantity;
 

@@ -3,6 +3,7 @@ package enrolment.enrolmentschool.src.domain;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +20,7 @@ public  class Enrolment {
     private String name;
 
     private String professor;
-    private int time;
+    private LocalTime time;
     private int gradePoint;
     private int stockQuantity;
 

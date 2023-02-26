@@ -25,6 +25,7 @@ public class SubjectService {
     private final SubjectDao subjectDao;
 
         /**과목 검색*/
+        @Transactional
     public List<Subject> findSubjects(SubjectSearch subjectSearch){
         return searchRepository.findAllByCriteria(subjectSearch);
     }
@@ -53,22 +54,29 @@ public class SubjectService {
         return subjectRepository.findOne(subjectId);
     }
 
-    public List<GetSubjectResponse> getSubjectList() {
-        List<Subject> getSubjectList=subjectDao.findAll();
-        List<GetSubjectResponse> getSubjectResponseList=new ArrayList<>();
-        if(getSubjectList.size()!=0){
-            for(int i=0;i<getSubjectResponseList.size();i++){
-                GetSubjectResponse getSubjectResponse=GetSubjectResponse.builder()
-                        .id(getSubjectList.get(i).getId())
-                        .name(getSubjectList.get(i).getName())
-                        .gradePoint(getSubjectList.get(i).getGradePoint())
-                        .professor(getSubjectList.get(i).getProfessor())
-                        .time(getSubjectList.get(i).getTime())
-                        .build();
-                getSubjectResponseList.add(getSubjectResponse);
-            }
-        }
-        return getSubjectResponseList;
+//    @Transactional
+//    public List<GetSubjectResponse> getSubjectList() {
+//        List<Subject> getSubjectList=subjectDao.findAll();
+//        List<GetSubjectResponse> getSubjectResponseList=new ArrayList<>();
+//        if(getSubjectList.size()!=0){
+//            for(int i=0;i<getSubjectResponseList.size();i++){
+//                GetSubjectResponse getSubjectResponse=GetSubjectResponse.builder()
+//                        .id(getSubjectList.get(i).getId())
+//                        .name(getSubjectList.get(i).getName())
+//                        .gradePoint(getSubjectList.get(i).getGradePoint())
+//                        .professor(getSubjectList.get(i).getProfessor())
+//                        .time(getSubjectList.get(i).getTime())
+//                        .build();
+//                getSubjectResponseList.add(getSubjectResponse);
+//            }
+//        }
+//        return getSubjectResponseList;
+//    }
+
+
+    public List<Subject> getSubjectList() {
+        List<Subject> subjectList = subjectDao.findAll();
+        return subjectList;
     }
 
     public Object getSubject(long id) {
@@ -84,4 +92,6 @@ public class SubjectService {
                 .gradePoint(subject.getGradePoint())
                 .build();
     }
+
+
 }

@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalTime;
 
 @Entity
 @Getter @Setter
@@ -19,7 +20,7 @@ public  class Preload {
     private String name;
 
     private String professor;
-    private int time;
+    private LocalTime time;
     private int gradePoint;
     private int stockQuantity;
 
