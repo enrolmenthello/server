@@ -8,6 +8,7 @@ import enrolment.enrolmentschool.src.domain.Enrolment;
 import enrolment.enrolmentschool.src.domain.Member;
 import enrolment.enrolmentschool.src.domain.Preload;
 import enrolment.enrolmentschool.src.domain.Subject;
+import enrolment.enrolmentschool.src.dto.request.PostPreloadCancelRequest;
 import enrolment.enrolmentschool.src.dto.request.PostPreloadRequest;
 import enrolment.enrolmentschool.src.dto.response.*;
 import enrolment.enrolmentschool.src.exception.enrolment.FailedEnrolmentSaveException;
@@ -87,9 +88,9 @@ public class PreloadService {
     }
 
     @Transactional
-    public CancelPreloadResponse cancelPreload(Long preloadId) {
+    public CancelPreloadResponse cancelPreload(PostPreloadCancelRequest postPreloadCancelRequest) {
         //수강신청 엔티티 조회
-        Optional<Preload> preload=preloadDao.findById(preloadId);
+        Optional<Preload> preload=preloadDao.findById(postPreloadCancelRequest.getPreloadId());
 
         //수강신청 취소
         preloadDao.delete(preload.get());

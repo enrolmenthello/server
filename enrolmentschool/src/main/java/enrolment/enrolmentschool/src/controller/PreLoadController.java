@@ -3,6 +3,7 @@ package enrolment.enrolmentschool.src.controller;
 import enrolment.enrolmentschool.src.config.BaseResponse;
 import enrolment.enrolmentschool.src.domain.Member;
 import enrolment.enrolmentschool.src.domain.Subject;
+import enrolment.enrolmentschool.src.dto.request.PostPreloadCancelRequest;
 import enrolment.enrolmentschool.src.dto.request.PostPreloadRequest;
 import enrolment.enrolmentschool.src.dto.response.CancelPreloadResponse;
 import enrolment.enrolmentschool.src.dto.response.PostPreloadResponse;
@@ -40,8 +41,8 @@ public class PreLoadController {
             @ApiResponse(code = 200, message = "OK", response = CancelPreloadResponse.class)
     })
     @PostMapping(value="/preload/cancel")
-    public  ResponseEntity<?> cancelPreload(@RequestParam("preloadId") Long preloadId){
-        return ResponseEntity.ok(preloadService.cancelPreload(preloadId));
+    public  ResponseEntity<?> cancelPreload(@RequestBody PostPreloadCancelRequest postPreloadCancelRequest){
+        return ResponseEntity.ok(preloadService.cancelPreload(postPreloadCancelRequest));
 
 
     }
