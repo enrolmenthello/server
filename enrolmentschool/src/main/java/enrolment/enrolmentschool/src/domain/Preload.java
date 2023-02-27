@@ -14,7 +14,7 @@ import java.time.LocalTime;
 @AllArgsConstructor
 public  class Preload {
 
-    @Id
+    @Id @GeneratedValue
     @Column(name="preload_id")
     private Long preloadId;
     private String name;
@@ -28,7 +28,7 @@ public  class Preload {
     @JoinColumn(name="member_id")
     private Member member;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+   @OneToOne
     @JoinColumn(name="subject_id")
     private Subject subject;
 

@@ -3,6 +3,7 @@ package enrolment.enrolmentschool.src.controller;
 import enrolment.enrolmentschool.src.config.BaseResponse;
 import enrolment.enrolmentschool.src.domain.Member;
 import enrolment.enrolmentschool.src.domain.Subject;
+import enrolment.enrolmentschool.src.dto.request.PostPreloadRequest;
 import enrolment.enrolmentschool.src.dto.response.CancelPreloadResponse;
 import enrolment.enrolmentschool.src.dto.response.PostPreloadResponse;
 import enrolment.enrolmentschool.src.service.PreloadService;
@@ -15,9 +16,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@Api(tags="1. enrolment API")
+@Api(tags="4. preload API")
 @Slf4j
 @Controller
 @RequiredArgsConstructor
@@ -29,8 +31,8 @@ public class PreLoadController {
             @ApiResponse(code = 200, message = "OK", response = PostPreloadResponse.class)
     })
     @PostMapping(value="/preload")
-    public ResponseEntity<?> preload(@RequestParam("memberId") Member member, @RequestParam("subjectId") Subject subject) {
-        return ResponseEntity.ok(new BaseResponse(preloadService.preload(member,subject)));
+    public ResponseEntity<?> preload(@RequestBody PostPreloadRequest postPreloadRequest) {
+        return ResponseEntity.ok(new BaseResponse(preloadService.preload(postPreloadRequest)));
     }
 
     @ApiOperation("미리담기 취소")

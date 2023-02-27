@@ -1,15 +1,15 @@
 package enrolment.enrolmentschool.src.dto.response;
 
+import enrolment.enrolmentschool.src.domain.Enrolment;
+import enrolment.enrolmentschool.src.domain.Subject;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import java.time.LocalTime;
 
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
 public class PostEnrolmentResponse {
@@ -23,6 +23,17 @@ public class PostEnrolmentResponse {
     private LocalTime time;
     private int gradePoint;
     private int stockQuantity;
+
+//    public static PostEnrolmentResponse of(Subject subject){
+//        return PostEnrolmentResponse.builder()
+//                .subjectId(subject.getId())
+//                .name(subject.getName())
+//                .stockQuantity(subject.getStockQuantity())
+//                .gradePoint(subject.getGradePoint())
+//                .professor(subject.getProfessor())
+//                .time(subject.getTime())
+//                .build();
+//    }
 
 }
 

@@ -9,6 +9,7 @@ import enrolment.enrolmentschool.src.domain.Enrolment;
 import enrolment.enrolmentschool.src.domain.Member;
 import enrolment.enrolmentschool.src.domain.Subject;
 import enrolment.enrolmentschool.src.domain.SubjectSearch;
+import enrolment.enrolmentschool.src.dto.request.PostEnrolmentCancelRequest;
 import enrolment.enrolmentschool.src.dto.request.PostEnrolmentRequest;
 import enrolment.enrolmentschool.src.dto.response.GetTotalGrade;
 import enrolment.enrolmentschool.src.dto.response.PostEnrolmentResponse;
@@ -105,54 +106,62 @@ public class EnrolmentService {
      * case2
      */
     @Transactional
-    public PostEnrolmentResponse enrolment(Member memberId, Subject subjectId) {
-        Optional<Member> member = memberDao.findById(memberId.getId());
+    public PostEnrolmentResponse enrolment(PostEnrolmentRequest postEnrolmentRequest) {
+        Optional<Member> member = memberDao.findById(postEnrolmentRequest.getMemberId());
         if (member.isEmpty()) {
             throw new NotFoundMemberException();
         }
 
-        Subject subject=saveSubject(subjectId);
+        Optional<Subject> subject=subjectDao.findById(postEnrolmentRequest.getSubjectId());
+        Subject subjects=Subject.builder()
+                .id(subject.get().getId())
+                .name(subject.get().getName())
+                .stockQuantity(subject.get().getStockQuantity())
+                .gradePoint(subject.get().getGradePoint())
+                .professor(subject.get().getProfessor())
+                .time(subject.get().getTime())
+                .build();
 
         try{
             Enrolment enrolment=Enrolment.builder()
-                    .subject(subject)
+                    .subject(subjects)
                     .member(member.get())
-                    .professor(subject.getProfessor())
-                    .name(subject.getName())
-                    .time(subject.getTime())
-                    .stockQuantity(subject.getStockQuantity())
-                    .gradePoint(subject.getGradePoint())
+                    .professor(subjects.getProfessor())
+                    .name(subjects.getName())
+                    .time(subjects.getTime())
+                    .stockQuantity(subjects.getStockQuantity())
+                    .gradePoint(subjects.getGradePoint())
                     .build();
             enrolmentDao.save(enrolment);
 
             return PostEnrolmentResponse.builder()
                     .message("수강신청이 완료되었습니다.")
-                    .professor(subject.getProfessor())
-                    .gradePoint(subject.getGradePoint())
-                    .name(subject.getName())
-                    .time(subject.getTime())
-                    .stockQuantity(subject.getStockQuantity())
+                    .professor(subjects.getProfessor())
+                    .gradePoint(subjects.getGradePoint())
+                    .name(subjects.getName())
+                    .time(subjects.getTime())
+                    .stockQuantity(subjects.getStockQuantity())
                     .enrolmentId(enrolment.getEnrolmentId())
                     .build();
         }catch (Exception e){
-            throw new FailedPreloadSaveException();
+            throw new FailedEnrolmentSaveException();
 
         }
 
     }
 
-    private Subject saveSubject(Subject subjectId){
-        Subject subject=Subject.builder()
-                .id(subjectId.getId())
-                .name(subjectId.getName())
-                .professor(subjectId.getProfessor())
-                .gradePoint(subjectId.getGradePoint())
-                .stockQuantity(subjectId.getStockQuantity())
-                .time(subjectId.getTime())
-                .build();
-        subjectDao.save(subject);
-        return subject;
-    }
+//    private Subject saveSubject(Subject subjectId){
+//        Subject subject=Subject.builder()
+//                .id(subjectId.getId())
+//                .name(subjectId.getName())
+//                .professor(subjectId.getProfessor())
+//                .gradePoint(subjectId.getGradePoint())
+//                .stockQuantity(subjectId.getStockQuantity())
+//                .time(subjectId.getTime())
+//                .build();
+//        subjectDao.save(subject);
+//        return subject;
+//    }
 
 
     //수강신청과목 생성
@@ -172,10 +181,11 @@ public class EnrolmentService {
 
     /**수강신청**/
 
-    public CancelEnrolmentResponse cancelEnrolment(Long enrolmentId){
+    @Transactional
+    public CancelEnrolmentResponse cancelEnrolment(PostEnrolmentCancelRequest postEnrolmentCancelRequest){
 
         //수강신청 엔티티 조회
-        Optional<Enrolment> enrolment=enrolmentDao.findById(enrolmentId);
+        Optional<Enrolment> enrolment=enrolmentDao.findById(postEnrolmentCancelRequest.getEnrolmentId());
 
         //수강신청 취소
         enrolmentDao.delete(enrolment.get());
@@ -183,6 +193,23 @@ public class EnrolmentService {
                 .message("해당 과목을 취소 했습니다")
                 .build();
     }
+
+//    @Transactional
+//    public List<PostEnrolmentResponse> enrolment(PostEnrolmentRequest postEnrolmentRequest) {
+//        Optional<Member> member=memberDao.findById(postEnrolmentRequest.getMemberId());
+//        if (member.isEmpty()) {
+//            throw new NotFoundMemberException();
+//        }
+//        List<Subject> subject=subjectDao.findByMember(member.get());
+//
+//        List<PostEnrolmentResponse> arr=new ArrayList<>();
+//        for(int i=0;i<subject.size();i++) {
+//            PostEnrolmentResponse postEnrolmentResponse = PostEnrolmentResponse.of(subject.get(i));
+//                arr.add(postEnrolmentResponse);
+//        }
+//
+//        return arr;
+//    }
 
 //    /**수강신청 학점 조회**/
 //

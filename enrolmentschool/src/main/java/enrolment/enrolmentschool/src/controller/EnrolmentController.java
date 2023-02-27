@@ -3,6 +3,7 @@ package enrolment.enrolmentschool.src.controller;
 import enrolment.enrolmentschool.src.config.BaseResponse;
 import enrolment.enrolmentschool.src.domain.Member;
 import enrolment.enrolmentschool.src.domain.Subject;
+import enrolment.enrolmentschool.src.dto.request.PostEnrolmentCancelRequest;
 import enrolment.enrolmentschool.src.dto.request.PostEnrolmentRequest;
 import enrolment.enrolmentschool.src.dto.response.CancelEnrolmentResponse;
 import enrolment.enrolmentschool.src.dto.response.GetEnrolmentResponse;
@@ -64,8 +65,8 @@ public class EnrolmentController {
             @ApiResponse(code = 200, message = "OK", response = PostEnrolmentResponse.class)
     })
     @PostMapping(value="/enrolment")
-public ResponseEntity<?> enrolment(@RequestParam("memberId") Member member,@RequestParam("subjectId") Subject subject) {
-            return ResponseEntity.ok(new BaseResponse(enrolmentService.enrolment(member,subject)));
+public ResponseEntity<?> enrolment(@RequestBody PostEnrolmentRequest postEnrolmentRequest) {
+            return ResponseEntity.ok(new BaseResponse(enrolmentService.enrolment(postEnrolmentRequest)));
         }
 //    public String enrolment(@RequestParam("memberId") Long memberId, @RequestParam("subjectId") String subjectId,
 //                            @RequestParam("count") int count){
@@ -78,10 +79,8 @@ public ResponseEntity<?> enrolment(@RequestParam("memberId") Member member,@Requ
             @ApiResponse(code = 200, message = "OK", response = CancelEnrolmentResponse.class)
     })
         @PostMapping(value="/enrolment/cancel")
-    public  ResponseEntity<?> cancelEnrolment(@RequestParam("enrolmentId") Long enrolmentId){
-        return ResponseEntity.ok(enrolmentService.cancelEnrolment(enrolmentId));
-
-
+    public  ResponseEntity<?> cancelEnrolment(@RequestBody PostEnrolmentCancelRequest postEnrolmentCancelRequest){
+        return ResponseEntity.ok(enrolmentService.cancelEnrolment(postEnrolmentCancelRequest));
     }
 
 //    @ApiOperation("총 수강신청 학점 조회")
