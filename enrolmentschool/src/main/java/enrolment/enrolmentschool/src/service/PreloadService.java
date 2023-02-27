@@ -8,6 +8,7 @@ import enrolment.enrolmentschool.src.domain.Enrolment;
 import enrolment.enrolmentschool.src.domain.Member;
 import enrolment.enrolmentschool.src.domain.Preload;
 import enrolment.enrolmentschool.src.domain.Subject;
+import enrolment.enrolmentschool.src.dto.request.GetPreloadListRequest;
 import enrolment.enrolmentschool.src.dto.request.PostPreloadCancelRequest;
 import enrolment.enrolmentschool.src.dto.request.PostPreloadRequest;
 import enrolment.enrolmentschool.src.dto.response.*;
@@ -97,6 +98,24 @@ public class PreloadService {
         return CancelPreloadResponse.builder()
                 .message("해당 과목을 취소 했습니다")
                 .build();
+    }
+
+    @Transactional
+    public List<GetPreloadListResponse> prelaodSearchAll(GetPreloadListRequest getPreloadListRequest) {
+        List<GetPreloadListResponse> getPreloadListResponses=new ArrayList<>();
+
+        Optional<Member> member=memberDao.findById(getPreloadListRequest.getMemberId());
+        if(member.isEmpty()){
+            throw new NotFoundMemberException();
+        }
+        List<Preload> preloadList=preloadDao.findByMember(member.get());
+        if(preloadList.size()!=0){
+            for(int i=0;i<preloadList.size();i++){
+                GetPreloadListResponse getPreloadListResponse=GetPreloadListResponse.of(preloadList.get(i));
+                getPreloadListResponses.add(getPreloadListResponse);
+            }
+        }
+        return getPreloadListResponses;
     }
 
 //    private Subject saveSubject(Subject subjectId){

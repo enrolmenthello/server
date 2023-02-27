@@ -9,10 +9,10 @@ import enrolment.enrolmentschool.src.domain.Enrolment;
 import enrolment.enrolmentschool.src.domain.Member;
 import enrolment.enrolmentschool.src.domain.Subject;
 import enrolment.enrolmentschool.src.domain.SubjectSearch;
+import enrolment.enrolmentschool.src.dto.request.GetEnrolmentListRequest;
 import enrolment.enrolmentschool.src.dto.request.PostEnrolmentCancelRequest;
 import enrolment.enrolmentschool.src.dto.request.PostEnrolmentRequest;
-import enrolment.enrolmentschool.src.dto.response.GetTotalGrade;
-import enrolment.enrolmentschool.src.dto.response.PostEnrolmentResponse;
+import enrolment.enrolmentschool.src.dto.response.*;
 import enrolment.enrolmentschool.src.exception.enrolment.FailedEnrolmentSaveException;
 import enrolment.enrolmentschool.src.exception.member.NotFoundMemberException;
 import enrolment.enrolmentschool.src.exception.preload.FailedPreloadSaveException;
@@ -20,8 +20,6 @@ import enrolment.enrolmentschool.src.exception.subject.NotFoundSubjectException;
 import enrolment.enrolmentschool.src.repository.EnrolmentRepository;
 import enrolment.enrolmentschool.src.repository.MemberRepository;
 import enrolment.enrolmentschool.src.repository.SubjectRepository;
-import enrolment.enrolmentschool.src.dto.response.CancelEnrolmentResponse;
-import enrolment.enrolmentschool.src.dto.response.GetEnrolmentResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -192,6 +190,25 @@ public class EnrolmentService {
         return CancelEnrolmentResponse.builder()
                 .message("해당 과목을 취소 했습니다")
                 .build();
+    }
+    @Transactional
+    public List<GetEnrolmentListResponse> enrolmentSearchAll(GetEnrolmentListRequest getEnrolmentListRequest) {
+        List<GetEnrolmentListResponse> getEnrolmentListResponses=new ArrayList<>();
+
+        Optional<Member> member=memberDao.findById(getEnrolmentListRequest.getMemberId());
+        if(member.isEmpty()){
+            throw new NotFoundMemberException();
+        }
+        List<Enrolment> enrolmentList=enrolmentDao.findByMember(member.get());
+        if(enrolmentList.size()!=0){
+            for(int i=0;i<enrolmentList.size();i++){
+                GetEnrolmentListResponse getEnrolmentListResponse=GetEnrolmentListResponse.of(enrolmentList.get(i));
+                getEnrolmentListResponses.add(getEnrolmentListResponse);
+            }
+        }
+        return getEnrolmentListResponses;
+
+
     }
 
 //    @Transactional

@@ -3,19 +3,14 @@ package enrolment.enrolmentschool.src.controller;
 import enrolment.enrolmentschool.src.config.BaseResponse;
 import enrolment.enrolmentschool.src.domain.Member;
 import enrolment.enrolmentschool.src.domain.Subject;
+import enrolment.enrolmentschool.src.dto.request.GetEnrolmentListRequest;
 import enrolment.enrolmentschool.src.dto.request.PostEnrolmentCancelRequest;
 import enrolment.enrolmentschool.src.dto.request.PostEnrolmentRequest;
-import enrolment.enrolmentschool.src.dto.response.CancelEnrolmentResponse;
-import enrolment.enrolmentschool.src.dto.response.GetEnrolmentResponse;
-import enrolment.enrolmentschool.src.dto.response.GetTotalGrade;
-import enrolment.enrolmentschool.src.dto.response.PostEnrolmentResponse;
+import enrolment.enrolmentschool.src.dto.response.*;
 import enrolment.enrolmentschool.src.service.EnrolmentService;
 import enrolment.enrolmentschool.src.service.MemberServiceImpl;
 import enrolment.enrolmentschool.src.service.SubjectService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -82,6 +77,16 @@ public ResponseEntity<?> enrolment(@RequestBody PostEnrolmentRequest postEnrolme
     public  ResponseEntity<?> cancelEnrolment(@RequestBody PostEnrolmentCancelRequest postEnrolmentCancelRequest){
         return ResponseEntity.ok(enrolmentService.cancelEnrolment(postEnrolmentCancelRequest));
     }
+
+    @ApiOperation("수강신청 내역조회")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK", response = GetEnrolmentListResponse.class)
+    })
+    @GetMapping("enrolment/search/all")
+    public ResponseEntity<?> enrolmentSearchAll(@RequestBody GetEnrolmentListRequest getEnrolmentListRequest){
+        return ResponseEntity.ok(new BaseResponse(enrolmentService.enrolmentSearchAll(getEnrolmentListRequest)));
+    }
+
 
 //    @ApiOperation("총 수강신청 학점 조회")
 //    @ApiResponses({
