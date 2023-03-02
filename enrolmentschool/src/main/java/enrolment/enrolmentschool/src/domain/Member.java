@@ -22,6 +22,8 @@ public class Member {
     private String name;
     private String password;
 
+    private int totalGrade;
+
 
     @OneToMany(mappedBy = "member")
     private List<Enrolment> enrolments=new ArrayList<>();
@@ -30,6 +32,10 @@ public class Member {
     private List<Preload> preloads=new ArrayList<>();
 
     public Member() {
+        this.totalGrade = 0;
+    }
 
+    public void updateTotalGrade(int gradePoint){
+        this.totalGrade += gradePoint;
     }
 }

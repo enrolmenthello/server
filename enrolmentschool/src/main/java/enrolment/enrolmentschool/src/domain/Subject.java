@@ -16,7 +16,7 @@ import java.time.LocalTime;
 @Getter @Setter
 @AllArgsConstructor
 public class Subject {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="subject_id")
     private Long id;
     private String name;
@@ -24,7 +24,11 @@ public class Subject {
     private String professor;
     private LocalTime time;
     private int gradePoint;
-    private int stockQuantity;
+    private int stockQuantity;//수강 가능 인원
+
+
+    @Column(name="member_id")
+    private String memberId;
 
 //    @OneToMany(mappedBy = "subject",cascade = CascadeType.ALL)hibernate_sequence
 //    private List<EnrolmentSubject> enrolmentSubjects=new ArrayList<>();

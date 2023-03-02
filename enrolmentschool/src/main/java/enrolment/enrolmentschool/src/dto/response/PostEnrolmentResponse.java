@@ -23,6 +23,7 @@ public class PostEnrolmentResponse {
     private LocalTime time;
     private int gradePoint;
     private int stockQuantity;
+    private int totalGrade;
 
 //    public static PostEnrolmentResponse of(Subject subject){
 //        return PostEnrolmentResponse.builder()

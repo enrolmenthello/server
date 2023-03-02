@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 public  class Enrolment {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="enrolment_id")
     private Long enrolmentId;
 
@@ -23,6 +23,10 @@ public  class Enrolment {
     private LocalTime time;
     private int gradePoint;
     private int stockQuantity;
+    private int totalGrade;//취득한 학점
+
+
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="member_id")
@@ -31,6 +35,8 @@ public  class Enrolment {
     @OneToOne
     @JoinColumn(name="subject_id")
     public Subject subject;
+
+
 
 
 //    @OneToMany(mappedBy = "enrolment",cascade = CascadeType.ALL)

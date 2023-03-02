@@ -1,10 +1,12 @@
 package enrolment.enrolmentschool.src.controller;
 
 import enrolment.enrolmentschool.src.config.BaseResponse;
+import enrolment.enrolmentschool.src.domain.Enrolment;
 import enrolment.enrolmentschool.src.domain.Member;
 import enrolment.enrolmentschool.src.domain.Subject;
 import enrolment.enrolmentschool.src.dto.request.GetEnrolmentListRequest;
 import enrolment.enrolmentschool.src.dto.request.PostEnrolmentCancelRequest;
+import enrolment.enrolmentschool.src.dto.request.PostEnrolmentGradeRequest;
 import enrolment.enrolmentschool.src.dto.request.PostEnrolmentRequest;
 import enrolment.enrolmentschool.src.dto.response.*;
 import enrolment.enrolmentschool.src.service.EnrolmentService;
@@ -63,11 +65,6 @@ public class EnrolmentController {
 public ResponseEntity<?> enrolment(@RequestBody PostEnrolmentRequest postEnrolmentRequest) {
             return ResponseEntity.ok(new BaseResponse(enrolmentService.enrolment(postEnrolmentRequest)));
         }
-//    public String enrolment(@RequestParam("memberId") Long memberId, @RequestParam("subjectId") String subjectId,
-//                            @RequestParam("count") int count){
-//        enrolmentService.enrolment(memberId, subjectId, count);
-//        return "redirect:/enrolments";
-//}
 
     @ApiOperation("수강신청 취소")
     @ApiResponses({
@@ -86,6 +83,29 @@ public ResponseEntity<?> enrolment(@RequestBody PostEnrolmentRequest postEnrolme
     public ResponseEntity<?> enrolmentSearchAll(@RequestBody GetEnrolmentListRequest getEnrolmentListRequest){
         return ResponseEntity.ok(new BaseResponse(enrolmentService.enrolmentSearchAll(getEnrolmentListRequest)));
     }
+
+//    @ApiOperation("수강신청 최대학점 조회")
+//    @ApiResponses({
+//            @ApiResponse(code = 200, message = "OK", response = PostEnrolmentGradeResponse.class)
+//    })
+//    @PostMapping("enrloment/courses")
+//    public ResponseEntity<?> createCourse(@RequestBody PostEnrolmentGradeRequest postEnrolmentGradeRequest) {
+//        // 수강신청 학점 총합 체크
+//        try {
+//            enrolmentService.checkTotalCredits(postEnrolmentGradeRequest);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return ResponseEntity.badRequest().body(null);
+//        }
+//
+//        PostEnrolmentGradeResponse savedEnrolment = enrolmentService.saveEnrolment(postEnrolmentGradeRequest);
+//        return ResponseEntity.ok(savedEnrolment);
+//    }
+
+
+
+
+
 
 
 //    @ApiOperation("총 수강신청 학점 조회")

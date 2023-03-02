@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 public enum EnrolmentExceptionStatus {
     // contract
     NOT_FOUND_ENROLMENT(2000,HttpStatus.BAD_REQUEST, "존재하지 않는 과목입니다."),
+    MAX_ENROLMENT_GRADE(2005,HttpStatus.BAD_REQUEST,"수강신청 학점은 18학점을 초과할 수 없습니다."),
 
     // customer
     NOT_FOUND_MEMBER(2001, HttpStatus.BAD_REQUEST, "등록된 고객 정보가 없습니다. 다시 시도해주시거나 회원 가입 후 진행해주세요."),
