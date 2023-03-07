@@ -2,10 +2,7 @@ package enrolment.enrolmentschool.src.domain;
 
 import enrolment.enrolmentschool.src.exception.NotEnoughStockException;
 import enrolment.enrolmentschool.src.dto.request.PostSubjectRequest;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalTime;
@@ -15,16 +12,18 @@ import java.time.LocalTime;
 @Builder
 @Getter @Setter
 @AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Subject {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="subject_id")
     private Long id;
     private String name;
 
+
     private String professor;
     private LocalTime time;
     private int gradePoint;
-    private int stockQuantity;//수강 가능 인원
+    private int stockQuantity;//수강신청 가능 인원
 
 
     @Column(name="member_id")
@@ -36,9 +35,9 @@ public class Subject {
 //    @OneToMany(mappedBy = "subject",cascade = CascadeType.ALL)
 //    private List<Preload> preloads=new ArrayList<>();
 
-    public Subject() {
 
-    }
+
+
 
 
 //    public void set(PostSubjectRequest postSubjectRequest) {
@@ -54,8 +53,8 @@ public class Subject {
         this.stockQuantity+=quantity;
     }
 
-    public void removeSubject(int quantity){
-        int restSubject=this.stockQuantity-quantity;
+    public void removeSubject(){
+        int restSubject=this.stockQuantity-1;
         if(restSubject<0){
             throw new NotEnoughStockException("need more subject");
         }

@@ -92,6 +92,7 @@ public class EnrolmentService {
 //        }
 
         member.updateTotalGrade(subject.getGradePoint());
+        subject.removeSubject();
         try {
 
             enrolmentDao.save(
