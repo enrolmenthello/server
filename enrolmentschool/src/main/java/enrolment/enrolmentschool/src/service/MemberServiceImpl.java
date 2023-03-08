@@ -6,6 +6,7 @@ import enrolment.enrolmentschool.src.dto.request.PostMemberCheckRequest;
 import enrolment.enrolmentschool.src.dto.request.PostMemberJoinRequest;
 import enrolment.enrolmentschool.src.dto.request.PostMemberLoginRequest;
 import enrolment.enrolmentschool.src.dto.response.PostMemberCheckResponse;
+import enrolment.enrolmentschool.src.exception.member.AlreadyExistMemberException;
 import enrolment.enrolmentschool.src.exception.member.NotFoundMemberException;
 import enrolment.enrolmentschool.src.exception.member.NotJoinMemberException;
 import enrolment.enrolmentschool.src.repository.MemberRepository;
@@ -42,6 +43,10 @@ public class MemberServiceImpl implements MemberService{
     public PostMemberResponse join(PostMemberJoinRequest postMemberJoinRequest) {
 //        validateDuplicateMember(postMemberJoinRequest);//중복 검증
         String  memberId= postMemberJoinRequest.getId();
+    Member checkMember=memberDao.findById(memberId).orElseThrow(()->new NotFoundMemberException());
+    if(memberId.equals(checkMember.getId())){
+        throw new AlreadyExistMemberException();
+    }
 
         Member createMember=Member.builder()
                 .id(memberId)
@@ -57,16 +62,16 @@ public class MemberServiceImpl implements MemberService{
                 .build();
     }
 
-    @Transactional
-    public boolean checkJoin(PostMemberCheckRequest postMemberCheckRequest) {
-        String  checkId= postMemberCheckRequest.getId();
-        Member checkMember=memberDao.findById(checkId).orElseThrow(()->new NotFoundMemberException());
-        if(checkId.equals(checkMember.getId())){
-            return false;
-        }else {
-            return true;
-        }
-    }
+//    @Transactional
+//    public boolean checkJoin(PostMemberCheckRequest postMemberCheckRequest) {
+//        String  checkId= postMemberCheckRequest.getId();
+//        Member checkMember=memberDao.findById(checkId).orElseThrow(()->new NotFoundMemberException());
+//        if(checkId.equals(checkMember.getId())){
+//            return false;
+//        }else {
+//            return true;
+//        }
+//    }
 
 
 

@@ -1,6 +1,7 @@
 package enrolment.enrolmentschool.src.controller;
 
 import enrolment.enrolmentschool.src.config.BaseResponse;
+import enrolment.enrolmentschool.src.dao.MemberDao;
 import enrolment.enrolmentschool.src.domain.Member;
 import enrolment.enrolmentschool.src.dto.request.PostMemberCheckRequest;
 import enrolment.enrolmentschool.src.dto.request.PostMemberJoinRequest;
@@ -14,6 +15,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +28,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MemberController {
     private final MemberServiceImpl memberServiceImpl;
+    private final MemberDao memberDao;
 
 //    @GetMapping(value="/new")
 //    public String createForm(Model model){
@@ -42,14 +45,14 @@ private ResponseEntity<?> join(@RequestBody  PostMemberJoinRequest postMemberJoi
         return ResponseEntity.ok(new BaseResponse(memberServiceImpl.join(postMemberJoinRequest)));
     }
 
-    @ApiOperation(value="회원 아이디 중복확인")
-    @ApiResponses({
-            @ApiResponse(code=200, message="OK", response = boolean.class)
-    })
-    @PostMapping("/join/check")
-    private ResponseEntity<?> checkJoin(@RequestBody PostMemberCheckRequest postMemberCheckRequest){
-        return ResponseEntity.ok(new BaseResponse(memberServiceImpl.checkJoin(postMemberCheckRequest)));
-    }
+//    @ApiOperation(value="회원 아이디 중복확인")
+//    @ApiResponses({
+//            @ApiResponse(code=200, message="OK", response = boolean.class)
+//    })
+//    @PostMapping("/join/check")
+//    private ResponseEntity<?> checkJoin(@RequestBody PostMemberCheckRequest postMemberCheckRequest){
+//        return ResponseEntity.ok(new BaseResponse(memberServiceImpl.checkJoin(postMemberCheckRequest)));
+//    }
 
 
     //로그인
