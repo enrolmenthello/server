@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Api(tags="1. enrolment API")
 @Slf4j
-@Controller
+@RestController
 @RequiredArgsConstructor
 public class EnrolmentController {
     private final EnrolmentService enrolmentService;
