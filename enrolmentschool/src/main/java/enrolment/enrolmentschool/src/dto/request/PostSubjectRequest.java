@@ -2,6 +2,8 @@ package enrolment.enrolmentschool.src.dto.request;
 
 import enrolment.enrolmentschool.src.domain.Member;
 import enrolment.enrolmentschool.src.domain.Subject;
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,15 +20,10 @@ import java.util.Vector;
 
 @Getter @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class PostSubjectRequest {
-    private String id;
-    private String name;
-
-    private String professor;
-    private int time;
-    private int gradePoint;
-    private int stockQuantity;
+    @ApiParam(value="과목번호", example = "0")
+    @ApiModelProperty(example = "12345678")
+    private Long subjectId;
 
 //    public boolean read(String fileName) {
 //        if(fileName.equals("data/")) {

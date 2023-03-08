@@ -1,20 +1,13 @@
 package enrolment.enrolmentschool.src.dto.response;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import io.swagger.annotations.ApiParam;
+import lombok.*;
 
-@Getter
+@Getter @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class PostSubjectResponse {
+    @ApiParam(value="과목번호", example = "0")
+    @ApiModelProperty(example = "12345678")
     private Long subjectId;
-    private String subjectName;
 
-    private String subjectProfessor;
-    private int subjectTime;
-    private int enrolmentGrade;
-    private int stockQuantity;
 }

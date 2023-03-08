@@ -2,7 +2,9 @@ package enrolment.enrolmentschool.src.controller;
 
 import enrolment.enrolmentschool.src.config.BaseResponse;
 import enrolment.enrolmentschool.src.domain.SubjectSearch;
+import enrolment.enrolmentschool.src.dto.request.PostSubjectRequest;
 import enrolment.enrolmentschool.src.dto.response.GetSubjectResponse;
+import enrolment.enrolmentschool.src.dto.response.PostSubjectResponse;
 import enrolment.enrolmentschool.src.service.SubjectService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
@@ -68,8 +70,8 @@ public class SubjectController {
             @ApiResponse(code = 200, message = "OK", response = GetSubjectResponse.class)
     })
     @GetMapping("/subject/search")
-    private ResponseEntity<?> getSubject(@RequestParam("id") @ApiParam(value = "과목 번호",example = "0", defaultValue = "1111") long id)  {
-        return ResponseEntity.ok(new BaseResponse(subjectService.getSubject(id)));
+    private ResponseEntity<?> getSubject(@RequestBody PostSubjectRequest postSubjectRequest)  {
+        return ResponseEntity.ok(new BaseResponse(subjectService.getSubject(postSubjectRequest)));
     }
 
 //    @ApiOperation(value = "과목 검색하기")

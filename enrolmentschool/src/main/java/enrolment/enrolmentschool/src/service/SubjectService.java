@@ -3,6 +3,7 @@ package enrolment.enrolmentschool.src.service;
 import enrolment.enrolmentschool.src.dao.SubjectDao;
 import enrolment.enrolmentschool.src.domain.Subject;
 import enrolment.enrolmentschool.src.domain.SubjectSearch;
+import enrolment.enrolmentschool.src.dto.request.PostSubjectRequest;
 import enrolment.enrolmentschool.src.exception.subject.NotFoundSubjectException;
 import enrolment.enrolmentschool.src.repository.SearchRepository;
 import enrolment.enrolmentschool.src.repository.SubjectRepository;
@@ -79,8 +80,8 @@ public class SubjectService {
         return subjectList;
     }
 
-    public Object getSubject(long id) {
-        Subject subject=subjectDao.findById(id).orElse(null);
+    public GetSubjectResponse getSubject(PostSubjectRequest postSubjectRequest) {
+        Subject subject=subjectDao.findById(postSubjectRequest.getSubjectId()).orElse(null);
         if(subject==null){
             throw new NotFoundSubjectException();
         }
