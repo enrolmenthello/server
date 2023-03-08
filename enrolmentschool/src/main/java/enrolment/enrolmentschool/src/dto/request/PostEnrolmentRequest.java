@@ -24,9 +24,6 @@ public class PostEnrolmentRequest {
     @ApiModelProperty(example = "1234")
     private Long subjectId;
 
-    @ApiParam(value="신청수", example = "0")
-    @ApiModelProperty(example = "1")
-    private int count;
 //
 //    @ApiParam(value="과목이름", example = "0")
 //    private String name;

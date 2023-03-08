@@ -16,6 +16,7 @@ import enrolment.enrolmentschool.src.dto.request.PostEnrolmentRequest;
 import enrolment.enrolmentschool.src.dto.response.*;
 import enrolment.enrolmentschool.src.exception.enrolment.FailedEnrolmentSaveException;
 import enrolment.enrolmentschool.src.exception.enrolment.MaxGradeEnrolmentException;
+import enrolment.enrolmentschool.src.exception.member.AlreadyExistMemberException;
 import enrolment.enrolmentschool.src.exception.member.MemberException;
 import enrolment.enrolmentschool.src.exception.member.NotFoundMemberException;
 import enrolment.enrolmentschool.src.exception.preload.FailedPreloadSaveException;
@@ -56,7 +57,10 @@ public class EnrolmentService {
         Member member = memberDao.findById(postEnrolmentRequest.getMemberId()).orElseThrow(() -> new NotFoundMemberException());
 
 
-        Subject subject = subjectDao.findById(postEnrolmentRequest.getSubjectId()).get();
+        Subject subject = subjectDao.findById(postEnrolmentRequest.getSubjectId()).orElseThrow(() -> new NotFoundSubjectException());
+        if(subject==null){
+            throw new NotFoundSubjectException();
+        }
         Subject subjects = Subject.builder()
                 .id(subject.getId())
                 .name(subject.getName())
@@ -66,8 +70,8 @@ public class EnrolmentService {
                 .time(subject.getTime())
                 .build();
 
-        List<Enrolment> enrolmentList = enrolmentDao.findByMemberId(postEnrolmentRequest.getMemberId())
-                .get();
+//        List<Enrolment> enrolmentList = enrolmentDao.findByMemberId(postEnrolmentRequest.getMemberId())
+//                .get();
 
 //        for (Enrolment enrolment : enrolmentList) {
 //            System.out.println("enrolment.getEnrolmentId() = " + enrolment.getEnrolmentId());

@@ -50,14 +50,15 @@ public class PreloadService {
             throw new NotFoundMemberException();
         }
 
-        Optional<Subject> subject=subjectDao.findById(postPreloadRequest.getSubjectId());
+        Subject subject=subjectDao.findById(postPreloadRequest.getSubjectId()).orElseThrow(()->new NotFoundSubjectException());
+
         Subject subjects=Subject.builder()
-                .id(subject.get().getId())
-                .name(subject.get().getName())
-                .stockQuantity(subject.get().getStockQuantity())
-                .gradePoint(subject.get().getGradePoint())
-                .professor(subject.get().getProfessor())
-                .time(subject.get().getTime())
+                .id(subject.getId())
+                .name(subject.getName())
+                .stockQuantity(subject.getStockQuantity())
+                .gradePoint(subject.getGradePoint())
+                .professor(subject.getProfessor())
+                .time(subject.getTime())
                 .build();
 
         try{
