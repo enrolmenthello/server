@@ -12,7 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Api(tags="3. member API")
-@Controller
+@RestController
 @Slf4j
 @RequiredArgsConstructor
 public class SubjectController {
