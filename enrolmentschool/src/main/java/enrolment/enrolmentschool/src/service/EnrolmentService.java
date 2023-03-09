@@ -17,15 +17,18 @@ import enrolment.enrolmentschool.src.dto.response.*;
 import enrolment.enrolmentschool.src.exception.enrolment.FailedEnrolmentSaveException;
 import enrolment.enrolmentschool.src.exception.enrolment.MaxGradeEnrolmentException;
 import enrolment.enrolmentschool.src.exception.member.AlreadyExistMemberException;
+import enrolment.enrolmentschool.src.exception.member.MaximumTotalGradeException;
 import enrolment.enrolmentschool.src.exception.member.MemberException;
 import enrolment.enrolmentschool.src.exception.member.NotFoundMemberException;
 import enrolment.enrolmentschool.src.exception.preload.FailedPreloadSaveException;
+import enrolment.enrolmentschool.src.exception.subject.LimitSubjectStockQuantityException;
 import enrolment.enrolmentschool.src.exception.subject.NotFoundSubjectException;
 import enrolment.enrolmentschool.src.repository.EnrolmentRepository;
 import enrolment.enrolmentschool.src.repository.MemberRepository;
 import enrolment.enrolmentschool.src.repository.SubjectRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.mapping.model.MappingInstantiationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -96,7 +99,13 @@ public class EnrolmentService {
 //        }
 
         member.updateTotalGrade(subject.getGradePoint());
+        if (member.getTotalGrade() > 18) {
+            throw new MaximumTotalGradeException();
+        }
         subject.removeSubject();
+        if(subject.getStockQuantity()<0){
+            throw new LimitSubjectStockQuantityException();
+        }
         try {
 
             enrolmentDao.save(

@@ -20,8 +20,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional(readOnly = true)
-@RequiredArgsConstructor @Slf4j
+//@Transactional(readOnly = true)
+@RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService{
 //    @Autowired
 //    MemberRepository memberRepository;
@@ -43,23 +43,37 @@ public class MemberServiceImpl implements MemberService{
     public PostMemberResponse join(PostMemberJoinRequest postMemberJoinRequest) {
 //        validateDuplicateMember(postMemberJoinRequest);//중복 검증
         String  memberId= postMemberJoinRequest.getId();
-    Member checkMember=memberDao.findById(memberId).orElseThrow(()->new NotFoundMemberException());
-    if(memberId.equals(checkMember.getId())){
-        throw new AlreadyExistMemberException();
-    }
+//        Member checkMember=memberDao.findById(memberId).orElseThrow(()->new NotFoundMemberException());
+if(memberDao.findById(memberId).isPresent()){
+    throw new AlreadyExistMemberException();
+}
 
-        Member createMember=Member.builder()
-                .id(memberId)
-                .name(postMemberJoinRequest.getName())
-                .password(postMemberJoinRequest.getPassword())
-                .build();
 
-        Member joinMember=memberDao.save(createMember);
-        return PostMemberResponse.builder()
-                .id(joinMember.getId())
-                .name(joinMember.getName())
-                .password(joinMember.getPassword())
-                .build();
+
+//    List<Member> checkMember=memberDao.findAll();
+//        if (memberId.equals(checkMember.get().getId())) {
+//            throw new AlreadyExistMemberException();
+//        }
+
+//        if (memberId.equals(checkMember.getId())) {
+//            throw new AlreadyExistMemberException();
+//        }
+
+    Member createMember = Member.builder()
+            .id(memberId)
+            .name(postMemberJoinRequest.getName())
+            .password(postMemberJoinRequest.getPassword())
+            .build();
+
+    Member joinMember = memberDao.save(createMember);
+
+    return PostMemberResponse.builder()
+            .id(joinMember.getId())
+            .name(joinMember.getName())
+            .password(joinMember.getPassword())
+            .build();
+
+
     }
 
 //    @Transactional
@@ -90,6 +104,7 @@ public class MemberServiceImpl implements MemberService{
      *
      * 회원 로그인인     */
 
+    @Transactional
     public PostMemberResponse login(PostMemberLoginRequest postMemberLoginRequest) {
         String id = postMemberLoginRequest.getId();
         Member loginMember = memberDao.findById(id).get();
