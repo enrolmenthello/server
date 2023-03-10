@@ -24,36 +24,4 @@ public class PostSubjectRequest {
     @ApiParam(value="과목번호", example = "0")
     @ApiModelProperty(example = "12345678")
     private Long subjectId;
-
-//    public boolean read(String fileName) {
-//        if(fileName.equals("data/")) {
-//            this.id = fileName.;
-//            this.name = sc.next();
-//            this.professor = sc.next();
-//            this.gradePoint = sc.next();
-//            this.time = sc.next();
-//            return true;
-//        }
-//        return false;
-//    }
-
-//    private void set(Subject subject) {
-//        this.id = subject.getId();
-//        this.name = subject.getName();
-//        this.professor = subject.getProfessor();
-//        this.gradePoint = subject.getGradePoint();
-//        this.time = subject.getTime();
-//    }
-//
-//    public void save(FileWriter fileWriter, Subject subject) {
-//        this.set(subject);
-//
-//        try {
-//            fileWriter.write(this.id + " " + this.name + " " + this.professor + " " + this.gradePoint + " " + this.time + "\n");
-//        } catch (IOException var4) {
-//            var4.printStackTrace();
-//        }
-//
-//    }
-
 }

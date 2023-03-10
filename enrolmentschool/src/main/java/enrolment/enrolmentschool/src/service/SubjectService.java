@@ -41,6 +41,7 @@ public class SubjectService {
                 .name(subject.getName())
                 .professor(subject.getProfessor())
                 .gradePoint(subject.getGradePoint())
+                .stockQuantity(subject.getStockQuantity())
                 .build();
     }
 }
