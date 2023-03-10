@@ -13,8 +13,12 @@ import enrolment.enrolmentschool.src.dto.request.PostPreloadCancelRequest;
 import enrolment.enrolmentschool.src.dto.request.PostPreloadRequest;
 import enrolment.enrolmentschool.src.dto.response.*;
 import enrolment.enrolmentschool.src.exception.enrolment.FailedEnrolmentSaveException;
+import enrolment.enrolmentschool.src.exception.member.MaximumTotalGradeException;
 import enrolment.enrolmentschool.src.exception.member.NotFoundMemberException;
 import enrolment.enrolmentschool.src.exception.preload.FailedPreloadSaveException;
+import enrolment.enrolmentschool.src.exception.subject.AlreadyExist2SubjectException;
+import enrolment.enrolmentschool.src.exception.subject.AlreadyExistSubjectException;
+import enrolment.enrolmentschool.src.exception.subject.LimitSubjectStockQuantityException;
 import enrolment.enrolmentschool.src.exception.subject.NotFoundSubjectException;
 import enrolment.enrolmentschool.src.repository.EnrolmentRepository;
 import enrolment.enrolmentschool.src.repository.MemberRepository;
@@ -45,12 +49,17 @@ public class PreloadService {
 
     @Transactional
     public PostPreloadResponse preload(PostPreloadRequest postPreloadRequest) {
-        Optional<Member> member = memberDao.findById(postPreloadRequest.getMemberId());
-        if (member.isEmpty()) {
-            throw new NotFoundMemberException();
+        Member member = memberDao.findById(postPreloadRequest.getMemberId()).orElseThrow(() -> new NotFoundMemberException());
+
+        Subject subject = subjectDao.findById(postPreloadRequest.getSubjectId()).orElseThrow(() -> new NotFoundSubjectException());
+        if(subject==null) {
+            throw new NotFoundSubjectException();
+        }
+        if (preloadDao.findByMemberAndSubject(member, subject).isPresent()) {
+            throw new AlreadyExist2SubjectException();
         }
 
-        Subject subject=subjectDao.findById(postPreloadRequest.getSubjectId()).orElseThrow(()->new NotFoundSubjectException());
+//        Subject subject=subjectDao.findById(postPreloadRequest.getSubjectId()).orElseThrow(()->new NotFoundSubjectException());
 
         Subject subjects=Subject.builder()
                 .id(subject.getId())
@@ -60,11 +69,20 @@ public class PreloadService {
                 .professor(subject.getProfessor())
                 .time(subject.getTime())
                 .build();
+//
+//        member.updateTotalGrade(subject.getGradePoint());
+//        if (member.getTotalGrade() > 18) {
+//            throw new MaximumTotalGradeException();
+//        }
+        subject.removeSubject();
+        if(subject.getStockQuantity()<0){
+            throw new LimitSubjectStockQuantityException();
+        }
 
         try{
             Preload preload=Preload.builder()
                     .subject(subjects)
-                    .member(member.get())
+                    .member(member)
                     .professor(subjects.getProfessor())
                     .name(subjects.getName())
                     .time(subjects.getTime())

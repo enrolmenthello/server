@@ -59,9 +59,6 @@ public class EnrolmentService {
     @Transactional
     public PostEnrolmentResponse enrolment(PostEnrolmentRequest postEnrolmentRequest) {
         Member member = memberDao.findById(postEnrolmentRequest.getMemberId()).orElseThrow(() -> new NotFoundMemberException());
-        Long subjectId= postEnrolmentRequest.getSubjectId();
-        String memberId= postEnrolmentRequest.getMemberId();
-
 
         Subject subject = subjectDao.findById(postEnrolmentRequest.getSubjectId()).orElseThrow(() -> new NotFoundSubjectException());
         if(subject==null) {

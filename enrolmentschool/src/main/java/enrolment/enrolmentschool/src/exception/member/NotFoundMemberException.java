@@ -5,8 +5,8 @@ import enrolment.enrolmentschool.src.exception.member.MemberExceptionStatus;
 
 public class NotFoundMemberException extends MemberException {
     public NotFoundMemberException() {
-        super(MemberExceptionStatus.NOT_FOUND_STAFF.getCode(),
-                MemberExceptionStatus.NOT_FOUND_STAFF.getHttpStatus(),
-                MemberExceptionStatus.NOT_FOUND_STAFF.getMessage());
+        super(MemberExceptionStatus.NOT_FOUND_MEMBER.getCode(),
+                MemberExceptionStatus.NOT_FOUND_MEMBER.getHttpStatus(),
+                MemberExceptionStatus.NOT_FOUND_MEMBER.getMessage());
     }
 }

@@ -5,6 +5,7 @@ import enrolment.enrolmentschool.src.domain.Member;
 import enrolment.enrolmentschool.src.dto.request.PostMemberJoinRequest;
 import enrolment.enrolmentschool.src.dto.request.PostMemberLoginRequest;
 import enrolment.enrolmentschool.src.dto.response.MemberLoginResponse;
+import enrolment.enrolmentschool.src.exception.member.NotFoundMemberException;
 import enrolment.enrolmentschool.src.exception.member.NotFoundMemberIdException;
 import enrolment.enrolmentschool.src.exception.member.NotFoundMemberPasswordException;
 import enrolment.enrolmentschool.src.exception.member.AlreadyExistMemberException;
@@ -102,14 +103,6 @@ if(memberDao.findById(memberId).isPresent()){
     public MemberLoginResponse login(PostMemberLoginRequest postMemberLoginRequest) {
         String id = postMemberLoginRequest.getId();
 
-//        Member idMember=memberDao.findByMemberId(id).get();
-//        if(idMember.getId().equals(postMemberLoginRequest.getId())){
-//            return MemberLoginResponse.builder()
-//                    .message("로그인에 성공했습니다!")
-//                    .build();
-//        }else{
-//            throw new NotFoundMemberIdException();
-//        }
 
 
         Member passwordMember = memberDao.findById(id).get();
@@ -118,7 +111,7 @@ if(memberDao.findById(memberId).isPresent()){
                     .message("로그인에 성공했습니다!")
                     .build();
         } else{
-            throw new NotFoundMemberPasswordException();
+            throw new NotFoundMemberException();
         }
 
 
