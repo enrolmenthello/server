@@ -55,9 +55,6 @@ public class Subject {
 
     public void removeSubject(){
         int restSubject=this.stockQuantity-1;
-        if(restSubject<0){
-            throw new NotEnoughStockException("need more subject");
-        }
         this.stockQuantity=restSubject;
     }
 

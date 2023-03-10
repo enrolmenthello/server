@@ -47,11 +47,8 @@ public class MemberServiceImpl implements MemberService{
 if(memberDao.findById(memberId).isPresent()){
     throw new AlreadyExistMemberException();
 }
-
-
-
-//    List<Member> checkMember=memberDao.findAll();
-//        if (memberId.equals(checkMember.get().getId())) {
+//    Member checkMember=memberDao.findById(memberId).get();
+//        if (memberId.equals(checkMember.getId())) {
 //            throw new AlreadyExistMemberException();
 //        }
 
