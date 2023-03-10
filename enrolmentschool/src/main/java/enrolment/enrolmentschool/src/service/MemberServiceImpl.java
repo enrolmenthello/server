@@ -28,10 +28,6 @@ public class MemberServiceImpl implements MemberService{
     private final MemberRepository memberRepository;
     private final MemberDao memberDao;
 
-    //@RequiredArgsConstructor을 사용하면 이것을 생략할 수 있다.
-//    public MemberService(MemberRepository memberRepository){
-//        this.memberRepository=memberRepository;
-//    }
 
     /**
      * 회원가입
@@ -39,20 +35,11 @@ public class MemberServiceImpl implements MemberService{
 
 @Transactional
     public PostMemberResponse join(PostMemberJoinRequest postMemberJoinRequest) {
-//        validateDuplicateMember(postMemberJoinRequest);//중복 검증
         String  memberId= postMemberJoinRequest.getId();
-//        Member checkMember=memberDao.findById(memberId).orElseThrow(()->new NotFoundMemberException());
-if(memberDao.findById(memberId).isPresent()){
-    throw new AlreadyExistMemberException();
-}
-//    Member checkMember=memberDao.findById(memberId).get();
-//        if (memberId.equals(checkMember.getId())) {
-//            throw new AlreadyExistMemberException();
-//        }
 
-//        if (memberId.equals(checkMember.getId())) {
-//            throw new AlreadyExistMemberException();
-//        }
+    if (memberDao.findById(memberId).isPresent()) {
+        throw new AlreadyExistMemberException();
+    }
 
     Member createMember = Member.builder()
             .id(memberId)
@@ -72,30 +59,6 @@ if(memberDao.findById(memberId).isPresent()){
 
     }
 
-//    @Transactional
-//    public boolean checkJoin(PostMemberCheckRequest postMemberCheckRequest) {
-//        String  checkId= postMemberCheckRequest.getId();
-//        Member checkMember=memberDao.findById(checkId).orElseThrow(()->new NotFoundMemberException());
-//        if(checkId.equals(checkMember.getId())){
-//            return false;
-//        }else {
-//            return true;
-//        }
-//    }
-
-
-
-    /**
-     * 전체 회원 조회
-     **/
-    public List<Member> findMembers() {
-        return memberRepository.findAll();
-    }
-
-    public Member findOne(Long memberId) {
-        return memberRepository.findOne(memberId);
-    }
-
     /**
      *
      * 회원 로그인인     */
@@ -103,8 +66,6 @@ if(memberDao.findById(memberId).isPresent()){
     @Transactional
     public PostMemberLoginResponse login(PostMemberLoginRequest postMemberLoginRequest) {
         String id = postMemberLoginRequest.getId();
-
-
 
         Member passwordMember = memberDao.findById(id).get();
         if (passwordMember.getPassword().equals(postMemberLoginRequest.getPassword())) {
@@ -116,10 +77,5 @@ if(memberDao.findById(memberId).isPresent()){
         } else{
             throw new NotFoundMemberException();
         }
-
-
     }
-
-
-
 }

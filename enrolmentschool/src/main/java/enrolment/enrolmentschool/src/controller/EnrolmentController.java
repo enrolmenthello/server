@@ -28,35 +28,6 @@ public class EnrolmentController {
     private final MemberServiceImpl memberServiceImpl;
     private final SubjectService subjectService;
 
-//    @ApiOperation(value="수강신청 폼")
-//    @GetMapping(value="/enrolment/form")
-//    public String createForm(Model model){
-//        List<Member> members= memberServiceImpl.findMembers();
-//        List<Subject> subjects=subjectService.findSubject();
-//
-//        model.addAttribute("members",members);
-//        model.addAttribute("subjects",subjects);
-//
-//        return "enrolment/enrolmentForm";
-//    }
-
-    /**수강신청 case 1
-     *
-     *
-     */
-//    @ApiOperation(value="수강신청 실행")
-//    @ApiResponses({
-//            @ApiResponse(code = 200, message = "OK", response = GetEnrolmentResponse.class)
-//    })
-//    @PostMapping(value="/enrolment")
-//public ResponseEntity<?> enrolment(@RequestParam ("subjectId") Long subjectId){
-//        return ResponseEntity.ok(new BaseResponse(enrolmentService.enrolment(subjectId)));
-
-    /**수강신청 case 2
-     *
-     *
-     */
-
         @ApiOperation(value="수강신청 실행")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK", response = PostEnrolmentResponse.class)
@@ -83,41 +54,4 @@ public ResponseEntity<?> enrolment(@RequestBody PostEnrolmentRequest postEnrolme
     public ResponseEntity<?> enrolmentSearchAll(@RequestBody GetEnrolmentListRequest getEnrolmentListRequest){
         return ResponseEntity.ok(new BaseResponse(enrolmentService.enrolmentSearchAll(getEnrolmentListRequest)));
     }
-
-//    @ApiOperation("수강신청 최대학점 조회")
-//    @ApiResponses({
-//            @ApiResponse(code = 200, message = "OK", response = PostEnrolmentGradeResponse.class)
-//    })
-//    @PostMapping("enrloment/courses")
-//    public ResponseEntity<?> createCourse(@RequestBody PostEnrolmentGradeRequest postEnrolmentGradeRequest) {
-//        // 수강신청 학점 총합 체크
-//        try {
-//            enrolmentService.checkTotalCredits(postEnrolmentGradeRequest);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return ResponseEntity.badRequest().body(null);
-//        }
-//
-//        PostEnrolmentGradeResponse savedEnrolment = enrolmentService.saveEnrolment(postEnrolmentGradeRequest);
-//        return ResponseEntity.ok(savedEnrolment);
-//    }
-
-
-
-
-
-
-
-//    @ApiOperation("총 수강신청 학점 조회")
-//    @ApiResponses({
-//            @ApiResponse(code = 200, message = "OK", response = GetTotalGrade.class)
-//    })
-//    @PostMapping(value="/enrolment/total")
-//    public  ResponseEntity<?> totalGrade(@RequestParam("enrolmentId") Long enrolmentId){
-//        return ResponseEntity.ok(enrolmentService.totalGrade(enrolmentId));
-//
-//
-//    }
-
-
 }

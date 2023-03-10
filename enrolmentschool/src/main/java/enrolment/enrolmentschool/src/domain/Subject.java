@@ -29,25 +29,6 @@ public class Subject {
     @Column(name="member_id")
     private String memberId;
 
-//    @OneToMany(mappedBy = "subject",cascade = CascadeType.ALL)hibernate_sequence
-//    private List<EnrolmentSubject> enrolmentSubjects=new ArrayList<>();
-//enrolments
-//    @OneToMany(mappedBy = "subject",cascade = CascadeType.ALL)
-//    private List<Preload> preloads=new ArrayList<>();
-
-
-
-
-
-
-//    public void set(PostSubjectRequest postSubjectRequest) {
-//        this.id = postSubjectRequest.getId();
-//        this.name = postSubjectRequest.getName();
-//        this.professor = postSubjectRequest.getProfessor();
-//        this.gradePoint = postSubjectRequest.getGradePoint();
-//        this.time = postSubjectRequest.getTime();
-//    }
-
     //비즈니스 로직//
     public void addStock(int quantity){
         this.stockQuantity+=quantity;

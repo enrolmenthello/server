@@ -10,13 +10,7 @@ import java.util.Optional;
 
 public interface PreloadDao extends JpaRepository<Preload,Long> {
 
-        List<Preload> findByMemberId(Long id);
-
         List<Preload> findByMember(Member member);
-        List<Preload> findBySubjectId(Long id);
-
-
-        List<Preload> findBySubject(Subject subject);
 
     Optional<Preload> findByMemberAndSubject(Member member, Subject subject);
 }

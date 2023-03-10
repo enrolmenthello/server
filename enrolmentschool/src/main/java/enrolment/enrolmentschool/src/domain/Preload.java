@@ -32,9 +32,6 @@ public  class Preload {
     @JoinColumn(name="subject_id")
     private Subject subject;
 
-//    @Enumerated(EnumType.STRING)
-//    private EnrolmentStatus status;
-
     public Preload(){
 
     }
@@ -43,9 +40,4 @@ public  class Preload {
         this.member = member;
         member.getPreloads().add(this);
     }
-
-
-
-
-
 }

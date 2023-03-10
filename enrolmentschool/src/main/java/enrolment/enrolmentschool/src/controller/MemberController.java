@@ -32,12 +32,6 @@ public class MemberController {
     private final MemberServiceImpl memberServiceImpl;
     private final MemberDao memberDao;
 
-//    @GetMapping(value="/new")
-//    public String createForm(Model model){
-//        model.addAttribute("memberForm",new MemberForm());
-//        return "members/createMemberForm";
-//    }
-
     @ApiOperation(value="회원 가입")
     @ApiResponses({
             @ApiResponse(code=200, message="OK", response = PostMemberResponse.class)
@@ -46,16 +40,6 @@ public class MemberController {
 private ResponseEntity<?> join(@RequestBody  PostMemberJoinRequest postMemberJoinRequest){
         return ResponseEntity.ok(new BaseResponse(memberServiceImpl.join(postMemberJoinRequest)));
     }
-
-//    @ApiOperation(value="회원 아이디 중복확인")
-//    @ApiResponses({
-//            @ApiResponse(code=200, message="OK", response = boolean.class)
-//    })
-//    @PostMapping("/join/check")
-//    private ResponseEntity<?> checkJoin(@RequestBody PostMemberCheckRequest postMemberCheckRequest){
-//        return ResponseEntity.ok(new BaseResponse(memberServiceImpl.checkJoin(postMemberCheckRequest)));
-//    }
-
 
     //로그인
     @ApiOperation(value="회원 로그인")
@@ -66,20 +50,5 @@ private ResponseEntity<?> join(@RequestBody  PostMemberJoinRequest postMemberJoi
     private ResponseEntity<?> login(@RequestBody  PostMemberLoginRequest postMemberLoginRequest){
         return ResponseEntity.ok(new BaseResponse(memberServiceImpl.login(postMemberLoginRequest)));
     }
-
-
-
-    @ApiOperation(value="회원 리스트 조회")
-    @ApiResponses({
-            @ApiResponse(code=200, message = "OK",response = PostMemberResponse.class)
-    })
-    //추가
-    @GetMapping(value="/list")
-    public String list(Model model){
-        List<Member> members= memberServiceImpl.findMembers();
-        model.addAttribute("members",members);
-        return "members/memberList";
-    }
-
 
 }

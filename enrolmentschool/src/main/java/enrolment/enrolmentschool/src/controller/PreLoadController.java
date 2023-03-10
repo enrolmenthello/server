@@ -45,8 +45,6 @@ public class PreLoadController {
     @PostMapping(value="/preload/cancel")
     public  ResponseEntity<?> cancelPreload(@RequestBody PostPreloadCancelRequest postPreloadCancelRequest){
         return ResponseEntity.ok(preloadService.cancelPreload(postPreloadCancelRequest));
-
-
     }
 
     @ApiOperation("미리담기 내역조회")

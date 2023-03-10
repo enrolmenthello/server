@@ -56,8 +56,6 @@ public class PreloadService {
             throw new AlreadyExist2SubjectException();
         }
 
-//        Subject subject=subjectDao.findById(postPreloadRequest.getSubjectId()).orElseThrow(()->new NotFoundSubjectException());
-
         Subject subjects=Subject.builder()
                 .id(subject.getId())
                 .name(subject.getName())
@@ -66,11 +64,7 @@ public class PreloadService {
                 .professor(subject.getProfessor())
                 .time(subject.getTime())
                 .build();
-//
-//        member.updateTotalGrade(subject.getGradePoint());
-//        if (member.getTotalGrade() > 18) {
-//            throw new MaximumTotalGradeException();
-//        }
+
         subject.removeSubject();
         if(subject.getStockQuantity()<0){
             throw new LimitSubject2StockQuantityException();
@@ -133,17 +127,4 @@ public class PreloadService {
         }
         return getPreloadListResponses;
     }
-
-//    private Subject saveSubject(Subject subjectId){
-//        Subject subject=Subject.builder()
-//                .id(subjectId.getId())
-//                .name(subjectId.getName())
-//                .professor(subjectId.getProfessor())
-//                .gradePoint(subjectId.getGradePoint())
-//                .stockQuantity(subjectId.getStockQuantity())
-//                .time(subjectId.getTime())
-//                .build();
-//        subjectDao.save(subject);
-//        return subject;
-//    }
 }
