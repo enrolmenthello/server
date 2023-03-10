@@ -14,5 +14,6 @@ public class PostMemberResponse {
     private String password;
 
     private String name;
+    private String message;
 
 }

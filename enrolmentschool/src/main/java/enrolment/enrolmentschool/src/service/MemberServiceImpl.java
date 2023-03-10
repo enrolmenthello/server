@@ -4,7 +4,7 @@ import enrolment.enrolmentschool.src.dao.MemberDao;
 import enrolment.enrolmentschool.src.domain.Member;
 import enrolment.enrolmentschool.src.dto.request.PostMemberJoinRequest;
 import enrolment.enrolmentschool.src.dto.request.PostMemberLoginRequest;
-import enrolment.enrolmentschool.src.dto.response.MemberLoginResponse;
+import enrolment.enrolmentschool.src.dto.response.PostMemberLoginResponse;
 import enrolment.enrolmentschool.src.exception.member.NotFoundMemberException;
 import enrolment.enrolmentschool.src.exception.member.NotFoundMemberIdException;
 import enrolment.enrolmentschool.src.exception.member.NotFoundMemberPasswordException;
@@ -66,6 +66,7 @@ if(memberDao.findById(memberId).isPresent()){
             .id(joinMember.getId())
             .name(joinMember.getName())
             .password(joinMember.getPassword())
+            .message("회원가입에 완료했습니다.")
             .build();
 
 
@@ -100,14 +101,16 @@ if(memberDao.findById(memberId).isPresent()){
      * 회원 로그인인     */
 
     @Transactional
-    public MemberLoginResponse login(PostMemberLoginRequest postMemberLoginRequest) {
+    public PostMemberLoginResponse login(PostMemberLoginRequest postMemberLoginRequest) {
         String id = postMemberLoginRequest.getId();
 
 
 
         Member passwordMember = memberDao.findById(id).get();
         if (passwordMember.getPassword().equals(postMemberLoginRequest.getPassword())) {
-            return MemberLoginResponse.builder()
+            return PostMemberLoginResponse.builder()
+                    .id(id)
+                    .password(passwordMember.getPassword())
                     .message("로그인에 성공했습니다!")
                     .build();
         } else{

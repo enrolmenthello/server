@@ -53,7 +53,7 @@ public class PreLoadController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK", response = GetPreloadListResponse.class)
     })
-    @GetMapping("preload/search/all")
+    @GetMapping("/preload/search/all")
     public ResponseEntity<?> prelaodSearchAll(@RequestBody GetPreloadListRequest getPreloadListRequest){
         return ResponseEntity.ok(new BaseResponse(preloadService.prelaodSearchAll(getPreloadListRequest)));
     }

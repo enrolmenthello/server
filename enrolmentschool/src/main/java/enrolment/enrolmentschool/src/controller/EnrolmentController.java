@@ -79,7 +79,7 @@ public ResponseEntity<?> enrolment(@RequestBody PostEnrolmentRequest postEnrolme
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK", response = GetEnrolmentListResponse.class)
     })
-    @GetMapping("enrolment/search/all")
+    @GetMapping("/enrolment/search/all")
     public ResponseEntity<?> enrolmentSearchAll(@RequestBody GetEnrolmentListRequest getEnrolmentListRequest){
         return ResponseEntity.ok(new BaseResponse(enrolmentService.enrolmentSearchAll(getEnrolmentListRequest)));
     }

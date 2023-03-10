@@ -2,10 +2,13 @@ package enrolment.enrolmentschool.src.dto.response;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
-@Getter @Setter
+@Getter
 @Builder
-public class MemberLoginResponse {
+public class PostMemberLoginResponse {
+    private String id;
+
+    private String password;
+
     private String message;
 }
