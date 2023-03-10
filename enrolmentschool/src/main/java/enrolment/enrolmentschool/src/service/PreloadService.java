@@ -16,10 +16,7 @@ import enrolment.enrolmentschool.src.exception.enrolment.FailedEnrolmentSaveExce
 import enrolment.enrolmentschool.src.exception.member.MaximumTotalGradeException;
 import enrolment.enrolmentschool.src.exception.member.NotFoundMemberException;
 import enrolment.enrolmentschool.src.exception.preload.FailedPreloadSaveException;
-import enrolment.enrolmentschool.src.exception.subject.AlreadyExist2SubjectException;
-import enrolment.enrolmentschool.src.exception.subject.AlreadyExistSubjectException;
-import enrolment.enrolmentschool.src.exception.subject.LimitSubjectStockQuantityException;
-import enrolment.enrolmentschool.src.exception.subject.NotFoundSubjectException;
+import enrolment.enrolmentschool.src.exception.subject.*;
 import enrolment.enrolmentschool.src.repository.EnrolmentRepository;
 import enrolment.enrolmentschool.src.repository.MemberRepository;
 import enrolment.enrolmentschool.src.repository.SubjectRepository;
@@ -76,7 +73,7 @@ public class PreloadService {
 //        }
         subject.removeSubject();
         if(subject.getStockQuantity()<0){
-            throw new LimitSubjectStockQuantityException();
+            throw new LimitSubject2StockQuantityException();
         }
 
         try{
