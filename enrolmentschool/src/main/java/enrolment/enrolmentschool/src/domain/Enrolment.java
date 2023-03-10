@@ -23,7 +23,6 @@ public  class Enrolment {
     private LocalTime time;
     private int gradePoint;
     private int stockQuantity;
-    private int totalGrade;//취득한 학점
 
 
 

@@ -21,6 +21,7 @@ import enrolment.enrolmentschool.src.exception.member.MaximumTotalGradeException
 import enrolment.enrolmentschool.src.exception.member.MemberException;
 import enrolment.enrolmentschool.src.exception.member.NotFoundMemberException;
 import enrolment.enrolmentschool.src.exception.preload.FailedPreloadSaveException;
+import enrolment.enrolmentschool.src.exception.subject.AlreadyExistSubjectException;
 import enrolment.enrolmentschool.src.exception.subject.LimitSubjectStockQuantityException;
 import enrolment.enrolmentschool.src.exception.subject.NotFoundSubjectException;
 import enrolment.enrolmentschool.src.repository.EnrolmentRepository;
@@ -58,12 +59,20 @@ public class EnrolmentService {
     @Transactional
     public PostEnrolmentResponse enrolment(PostEnrolmentRequest postEnrolmentRequest) {
         Member member = memberDao.findById(postEnrolmentRequest.getMemberId()).orElseThrow(() -> new NotFoundMemberException());
+        Long subjectId= postEnrolmentRequest.getSubjectId();
+        String memberId= postEnrolmentRequest.getMemberId();
 
 
         Subject subject = subjectDao.findById(postEnrolmentRequest.getSubjectId()).orElseThrow(() -> new NotFoundSubjectException());
-        if(subject==null){
+        if(subject==null) {
             throw new NotFoundSubjectException();
         }
+        if (enrolmentDao.findByMemberAndSubject(member, subject).isPresent()) {
+            throw new AlreadyExistSubjectException();
+        }
+
+
+
         Subject subjects = Subject.builder()
                 .id(subject.getId())
                 .name(subject.getName())

@@ -6,6 +6,7 @@ import enrolment.enrolmentschool.src.domain.Member;
 import enrolment.enrolmentschool.src.dto.request.PostMemberCheckRequest;
 import enrolment.enrolmentschool.src.dto.request.PostMemberJoinRequest;
 import enrolment.enrolmentschool.src.dto.request.PostMemberLoginRequest;
+import enrolment.enrolmentschool.src.dto.response.MemberLoginResponse;
 import enrolment.enrolmentschool.src.dto.response.PostMemberCheckResponse;
 import enrolment.enrolmentschool.src.service.MemberServiceImpl;
 import enrolment.enrolmentschool.src.dto.response.PostMemberResponse;
@@ -58,7 +59,7 @@ private ResponseEntity<?> join(@RequestBody  PostMemberJoinRequest postMemberJoi
     //로그인
     @ApiOperation(value="회원 로그인")
     @ApiResponses({
-            @ApiResponse(code=200, message="OK", response = PostMemberResponse.class)
+            @ApiResponse(code=200, message="OK", response = MemberLoginResponse.class)
     })
     @PostMapping("/login")
     private ResponseEntity<?> login(@RequestBody  PostMemberLoginRequest postMemberLoginRequest){

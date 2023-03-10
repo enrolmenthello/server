@@ -14,12 +14,12 @@ public interface EnrolmentDao extends JpaRepository<Enrolment,Long> {
 
 
 //    Optional<Enrolment> findByMemberId(String memberId);
-    Optional<List<Enrolment>> findByMemberId(String memberId);
+//    Optional<List<Enrolment>> findByMemberId(String memberId);
     List<Enrolment> findByEnrolmentId(String enrolmentId);
 
+    Optional<Enrolment> findByMemberId(String id);
+
     List<Enrolment> findByMember(Member member);
-    List<Enrolment> findBySubjectId(Long id);
 
-
-    List<Enrolment> findBySubject(Subject subject);
+    Optional<Enrolment> findByMemberAndSubject(Member member, Subject subject);
 }

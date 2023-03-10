@@ -2,22 +2,19 @@ package enrolment.enrolmentschool.src.service;
 
 import enrolment.enrolmentschool.src.dao.MemberDao;
 import enrolment.enrolmentschool.src.domain.Member;
-import enrolment.enrolmentschool.src.dto.request.PostMemberCheckRequest;
 import enrolment.enrolmentschool.src.dto.request.PostMemberJoinRequest;
 import enrolment.enrolmentschool.src.dto.request.PostMemberLoginRequest;
-import enrolment.enrolmentschool.src.dto.response.PostMemberCheckResponse;
+import enrolment.enrolmentschool.src.dto.response.MemberLoginResponse;
+import enrolment.enrolmentschool.src.exception.member.NotFoundMemberIdException;
+import enrolment.enrolmentschool.src.exception.member.NotFoundMemberPasswordException;
 import enrolment.enrolmentschool.src.exception.member.AlreadyExistMemberException;
-import enrolment.enrolmentschool.src.exception.member.NotFoundMemberException;
-import enrolment.enrolmentschool.src.exception.member.NotJoinMemberException;
 import enrolment.enrolmentschool.src.repository.MemberRepository;
 import enrolment.enrolmentschool.src.dto.response.PostMemberResponse;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 //@Transactional(readOnly = true)
@@ -102,16 +99,26 @@ if(memberDao.findById(memberId).isPresent()){
      * 회원 로그인인     */
 
     @Transactional
-    public PostMemberResponse login(PostMemberLoginRequest postMemberLoginRequest) {
+    public MemberLoginResponse login(PostMemberLoginRequest postMemberLoginRequest) {
         String id = postMemberLoginRequest.getId();
-        Member loginMember = memberDao.findById(id).get();
-        if (loginMember.getPassword().equals(postMemberLoginRequest.getPassword())) {
-            return PostMemberResponse.builder()
-                    .id(id)
-                    .name(loginMember.getName())
+
+//        Member idMember=memberDao.findByMemberId(id).get();
+//        if(idMember.getId().equals(postMemberLoginRequest.getId())){
+//            return MemberLoginResponse.builder()
+//                    .message("로그인에 성공했습니다!")
+//                    .build();
+//        }else{
+//            throw new NotFoundMemberIdException();
+//        }
+
+
+        Member passwordMember = memberDao.findById(id).get();
+        if (passwordMember.getPassword().equals(postMemberLoginRequest.getPassword())) {
+            return MemberLoginResponse.builder()
+                    .message("로그인에 성공했습니다!")
                     .build();
-        }else{
-            throw new NotFoundMemberException();
+        } else{
+            throw new NotFoundMemberPasswordException();
         }
 
 
