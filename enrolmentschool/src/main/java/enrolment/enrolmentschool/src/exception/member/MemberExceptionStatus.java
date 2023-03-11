@@ -15,7 +15,7 @@ public enum MemberExceptionStatus {
     MAXIMUM_TOTAL_GRADE(3005,HttpStatus.BAD_REQUEST,"18학점 이상은 수강신청 하실 수 없습니다."),
     NOT_FOUND_MEMBER_PASSWORD(3006,HttpStatus.BAD_REQUEST,"비밀번호가 틀렸습니다. 다시 입력해주세요."),
     NOT_FOUND_MEMBER_ID(3007,HttpStatus.BAD_REQUEST,"아이디가 틀렸습니다. 다시 입력해주세요."),
-    NOT_FOUND_MEMBER(3008,HttpStatus.BAD_REQUEST,"아이디 혹은 비밀번호가 틀렸습니다. 다시 입력해주세요.");
+    NOT_FOUND_MEMBER(3008,HttpStatus.BAD_REQUEST,"회원을 찾을 수 없습니다. 다시 입력해주세요.");
 
 
     private final int code;
