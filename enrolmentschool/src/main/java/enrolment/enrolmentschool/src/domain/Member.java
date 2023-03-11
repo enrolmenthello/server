@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Entity
-@Getter @Setter
+@Getter
 public class Member {
     @Id
     @Column(name="member_id")

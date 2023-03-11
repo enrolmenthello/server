@@ -10,7 +10,7 @@ import java.time.LocalTime;
 
 @Entity
 @Builder
-@Getter @Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Subject {

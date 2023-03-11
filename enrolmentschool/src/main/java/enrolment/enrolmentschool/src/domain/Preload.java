@@ -9,7 +9,7 @@ import javax.persistence.*;
 import java.time.LocalTime;
 
 @Entity
-@Getter @Setter
+@Getter
 @Builder
 @AllArgsConstructor
 public  class Preload {
