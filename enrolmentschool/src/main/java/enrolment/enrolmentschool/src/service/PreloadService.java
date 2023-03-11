@@ -13,9 +13,11 @@ import enrolment.enrolmentschool.src.dto.request.PostPreloadCancelRequest;
 import enrolment.enrolmentschool.src.dto.request.PostPreloadRequest;
 import enrolment.enrolmentschool.src.dto.response.*;
 import enrolment.enrolmentschool.src.exception.enrolment.FailedEnrolmentSaveException;
+import enrolment.enrolmentschool.src.exception.enrolment.NotFoundEnrolmentException;
 import enrolment.enrolmentschool.src.exception.member.MaximumTotalGradeException;
 import enrolment.enrolmentschool.src.exception.member.NotFoundMemberException;
 import enrolment.enrolmentschool.src.exception.preload.FailedPreloadSaveException;
+import enrolment.enrolmentschool.src.exception.preload.NotFoundPreloadException;
 import enrolment.enrolmentschool.src.exception.subject.*;
 import enrolment.enrolmentschool.src.repository.EnrolmentRepository;
 import enrolment.enrolmentschool.src.repository.MemberRepository;
@@ -98,14 +100,33 @@ public class PreloadService {
 
     @Transactional
     public CancelPreloadResponse cancelPreload(PostPreloadCancelRequest postPreloadCancelRequest) {
-        //수강신청 엔티티 조회
-        Optional<Preload> preload=preloadDao.findById(postPreloadCancelRequest.getPreloadId());
+        Member member=memberDao.findById(postPreloadCancelRequest.getMemberId()).orElseThrow(()->new NotFoundMemberException());
+        Subject subject=subjectDao.findById(postPreloadCancelRequest.getSubjectId()).orElseThrow(()->new NotFoundSubjectException());
 
-        //수강신청 취소
-        preloadDao.delete(preload.get());
+        Optional<Preload> preload=preloadDao.findByMemberAndSubject(member,subject);
+        if(preload.isEmpty()){
+            throw new NotFoundPreloadException();
+        }
+        Preload existingPreload = preload.get();
+        Subject existingSubject = existingPreload.getSubject();
+
+        // update member's total grade
+        member.updateTotalGrade(-existingSubject.getGradePoint());
+
+        // add subject back to available stock
+        existingSubject.addSubject();
+
+        // delete enrolment
+        preloadDao.delete(existingPreload);
+
         return CancelPreloadResponse.builder()
-                .message("해당 과목을 취소 했습니다")
+                .message("미리담기 취소가 완료되었습니다.")
+                .professor(existingSubject.getProfessor())
+                .gradePoint(existingSubject.getGradePoint())
+                .name(existingSubject.getName())
+                .time(existingSubject.getTime())
                 .build();
+
     }
 
     @Transactional

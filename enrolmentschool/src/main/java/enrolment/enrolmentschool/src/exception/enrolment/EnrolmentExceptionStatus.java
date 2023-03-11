@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 @RequiredArgsConstructor
 public enum EnrolmentExceptionStatus {
     // contract
-    NOT_FOUND_ENROLMENT(2000,HttpStatus.BAD_REQUEST, "해당 학생의 수강신청 현황을 찾을 수 없습니다."),
+    NOT_FOUND_ENROLMENT(2000,HttpStatus.BAD_REQUEST, "해당 학생의 취소하려는 과목의 수강신청 현황을 찾을 수 없습니다."),
     MAX_ENROLMENT_GRADE(2005,HttpStatus.BAD_REQUEST,"수강신청 학점은 18학점을 초과할 수 없습니다."),
 
     // customer
