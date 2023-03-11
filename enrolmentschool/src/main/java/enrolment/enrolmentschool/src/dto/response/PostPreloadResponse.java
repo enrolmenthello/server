@@ -19,6 +19,6 @@ public class PostPreloadResponse {
     private String professor;
     private LocalTime time;
     private int gradePoint;
-    private int stockQuantity;
+
 
 }

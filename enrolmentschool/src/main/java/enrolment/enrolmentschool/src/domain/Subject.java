@@ -39,6 +39,10 @@ public class Subject {
         this.stockQuantity=restSubject;
     }
 
+    public void addSubject() {
+        this.stockQuantity++;
+    }
+
 
 
 

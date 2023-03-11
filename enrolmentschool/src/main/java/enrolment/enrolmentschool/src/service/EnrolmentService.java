@@ -16,6 +16,7 @@ import enrolment.enrolmentschool.src.dto.request.PostEnrolmentRequest;
 import enrolment.enrolmentschool.src.dto.response.*;
 import enrolment.enrolmentschool.src.exception.enrolment.FailedEnrolmentSaveException;
 import enrolment.enrolmentschool.src.exception.enrolment.MaxGradeEnrolmentException;
+import enrolment.enrolmentschool.src.exception.enrolment.NotFoundEnrolmentException;
 import enrolment.enrolmentschool.src.exception.member.AlreadyExistMemberException;
 import enrolment.enrolmentschool.src.exception.member.MaximumTotalGradeException;
 import enrolment.enrolmentschool.src.exception.member.MemberException;
@@ -116,15 +117,34 @@ public class EnrolmentService {
     /**수강신청**/
     @Transactional
     public CancelEnrolmentResponse cancelEnrolment(PostEnrolmentCancelRequest postEnrolmentCancelRequest){
+        Member member=memberDao.findById(postEnrolmentCancelRequest.getMemberId()).orElseThrow(()->new NotFoundMemberException());
+        Subject subject=subjectDao.findById(postEnrolmentCancelRequest.getSubjectId()).orElseThrow(()->new NotFoundSubjectException());
 
-        //수강신청 엔티티 조회
-        Optional<Enrolment> enrolment=enrolmentDao.findById(postEnrolmentCancelRequest.getEnrolmentId());
+        Optional<Enrolment> enrolment=enrolmentDao.findByMemberAndSubject(member,subject);
+        if(enrolment.isEmpty()){
+            throw new NotFoundEnrolmentException();
+        }
+        Enrolment existingEnrolment = enrolment.get();
+        Subject existingSubject = existingEnrolment.getSubject();
 
-        //수강신청 취소
-        enrolmentDao.delete(enrolment.get());
+        // update member's total grade
+        member.updateTotalGrade(-existingSubject.getGradePoint());
+
+        // add subject back to available stock
+        existingSubject.addSubject();
+
+        // delete enrolment
+        enrolmentDao.delete(existingEnrolment);
+
         return CancelEnrolmentResponse.builder()
-                .message("해당 과목을 취소 했습니다")
+                .message("수강취소가 완료되었습니다.")
+                .professor(existingSubject.getProfessor())
+                .gradePoint(existingSubject.getGradePoint())
+                .name(existingSubject.getName())
+                .time(existingSubject.getTime())
                 .build();
+
+
     }
     @Transactional
     public List<GetEnrolmentListResponse> enrolmentSearchAll(GetEnrolmentListRequest getEnrolmentListRequest) {

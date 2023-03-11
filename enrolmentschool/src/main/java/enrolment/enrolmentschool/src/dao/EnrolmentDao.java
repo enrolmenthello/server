@@ -10,10 +10,6 @@ import java.util.Optional;
 
 public interface EnrolmentDao extends JpaRepository<Enrolment,Long> {
 
-    List<Enrolment> findByEnrolmentId(String enrolmentId);
-
-    Optional<Enrolment> findByMemberId(String id);
-
     List<Enrolment> findByMember(Member member);
 
     Optional<Enrolment> findByMemberAndSubject(Member member, Subject subject);
