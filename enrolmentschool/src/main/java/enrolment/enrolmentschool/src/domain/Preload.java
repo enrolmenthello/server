@@ -22,7 +22,6 @@ public  class Preload {
     private String professor;
     private LocalTime time;
     private int gradePoint;
-    private int stockQuantity;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="member_id")

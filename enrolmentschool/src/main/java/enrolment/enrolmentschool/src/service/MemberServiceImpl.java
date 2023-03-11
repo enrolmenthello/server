@@ -66,16 +66,17 @@ public class MemberServiceImpl implements MemberService{
     @Transactional
     public PostMemberLoginResponse login(PostMemberLoginRequest postMemberLoginRequest) {
         String id = postMemberLoginRequest.getId();
+        String password= postMemberLoginRequest.getPassword();
 
-        Member passwordMember = memberDao.findById(id).get();
-        if (passwordMember.getPassword().equals(postMemberLoginRequest.getPassword())) {
+        Member member = memberDao.findById(id).orElseThrow(NotFoundMemberIdException::new);
+        if (member.getPassword().equals(password)){
             return PostMemberLoginResponse.builder()
                     .id(id)
-                    .password(passwordMember.getPassword())
+                    .password(password)
                     .message("로그인에 성공했습니다!")
                     .build();
         } else{
-            throw new NotFoundMemberException();
+            throw new NotFoundMemberPasswordException();
         }
     }
 }

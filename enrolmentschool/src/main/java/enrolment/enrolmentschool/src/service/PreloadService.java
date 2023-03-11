@@ -77,7 +77,6 @@ public class PreloadService {
                     .professor(subjects.getProfessor())
                     .name(subjects.getName())
                     .time(subjects.getTime())
-                    .stockQuantity(subjects.getStockQuantity())
                     .gradePoint(subjects.getGradePoint())
                     .build();
             preloadDao.save(preload);
@@ -88,7 +87,6 @@ public class PreloadService {
                     .gradePoint(subjects.getGradePoint())
                     .name(subjects.getName())
                     .time(subjects.getTime())
-                    .stockQuantity(subjects.getStockQuantity())
                     .preloadId(preload.getPreloadId())
                     .build();
         }catch (Exception e){

@@ -25,9 +25,9 @@ public class Subject {
     private int gradePoint;
     private int stockQuantity;//수강신청 가능 인원
 
-
-    @Column(name="member_id")
-    private String memberId;
+//
+//    @Column(name="member_id")
+//    private String memberId;
 
     //비즈니스 로직//
     public void addStock(int quantity){
