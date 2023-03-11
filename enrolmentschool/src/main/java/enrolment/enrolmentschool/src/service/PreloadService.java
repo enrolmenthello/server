@@ -110,8 +110,6 @@ public class PreloadService {
         Preload existingPreload = preload.get();
         Subject existingSubject = existingPreload.getSubject();
 
-        // update member's total grade
-        member.updateTotalGrade(-existingSubject.getGradePoint());
 
         // add subject back to available stock
         existingSubject.addSubject();
