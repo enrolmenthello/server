@@ -94,7 +94,6 @@ public class EnrolmentService {
                             .professor(subjects.getProfessor())
                             .name(subjects.getName())
                             .time(subjects.getTime())
-                            .stockQuantity(subjects.getStockQuantity())
                             .gradePoint(subjects.getGradePoint())
                             .build()
             );
@@ -104,8 +103,6 @@ public class EnrolmentService {
                         .gradePoint(subjects.getGradePoint())
                         .name(subjects.getName())
                         .time(subjects.getTime())
-                        .stockQuantity(subjects.getStockQuantity())
-
                         .build();
 
         } catch (Exception e) {

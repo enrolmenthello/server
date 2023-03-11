@@ -22,7 +22,6 @@ public class PostEnrolmentResponse {
     private String professor;
     private LocalTime time;
     private int gradePoint;
-    private int stockQuantity;
     private int totalGrade;
 
 //    public static PostEnrolmentResponse of(Subject subject){

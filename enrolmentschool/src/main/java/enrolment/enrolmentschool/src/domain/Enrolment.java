@@ -22,7 +22,7 @@ public  class Enrolment {
     private String professor;
     private LocalTime time;
     private int gradePoint;
-    private int stockQuantity;
+
 
 
 
@@ -42,4 +42,5 @@ public  class Enrolment {
         this.member = member;
         member.getEnrolments().add(this);
     }
+
 }
