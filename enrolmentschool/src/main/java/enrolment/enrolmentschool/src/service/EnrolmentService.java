@@ -30,7 +30,7 @@ import java.util.Optional;
 
 @Service
 @Slf4j
-@Transactional(readOnly = true)
+//@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class EnrolmentService {
 

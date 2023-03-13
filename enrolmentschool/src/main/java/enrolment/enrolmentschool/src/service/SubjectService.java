@@ -23,6 +23,7 @@ public class SubjectService {
     private final SearchRepository searchRepository;
     private final SubjectDao subjectDao;
 
+
     public List<Subject> getSubjectList() {
         List<Subject> subjectList = subjectDao.findAll();
         return subjectList;
