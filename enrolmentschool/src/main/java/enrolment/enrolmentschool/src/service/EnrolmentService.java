@@ -19,9 +19,6 @@ import enrolment.enrolmentschool.src.exception.member.NotFoundMemberException;
 import enrolment.enrolmentschool.src.exception.subject.AlreadyExistSubjectException;
 import enrolment.enrolmentschool.src.exception.subject.LimitSubjectStockQuantityException;
 import enrolment.enrolmentschool.src.exception.subject.NotFoundSubjectException;
-import enrolment.enrolmentschool.src.repository.EnrolmentRepository;
-import enrolment.enrolmentschool.src.repository.MemberRepository;
-import enrolment.enrolmentschool.src.repository.SubjectsRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -36,9 +33,7 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class EnrolmentService {
-    private final MemberRepository memberRepository;
-    private final EnrolmentRepository enrolmentRepository;
-    private final SubjectsRepository subjectRepository;
+
     private final EnrolmentDao enrolmentDao;
 
     private final MemberDao memberDao;

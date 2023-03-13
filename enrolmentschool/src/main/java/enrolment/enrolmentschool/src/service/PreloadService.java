@@ -29,7 +29,7 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class PreloadService {
-    private final EnrolmentDao enrolmentDao;
+
 
     private final PreloadDao preloadDao;
 
