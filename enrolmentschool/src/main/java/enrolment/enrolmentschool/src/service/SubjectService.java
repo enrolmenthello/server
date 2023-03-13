@@ -2,17 +2,15 @@ package enrolment.enrolmentschool.src.service;
 
 import enrolment.enrolmentschool.src.dao.SubjectDao;
 import enrolment.enrolmentschool.src.domain.Subject;
-import enrolment.enrolmentschool.src.domain.SubjectSearch;
 import enrolment.enrolmentschool.src.dto.request.PostSubjectRequest;
 import enrolment.enrolmentschool.src.exception.subject.NotFoundSubjectException;
 import enrolment.enrolmentschool.src.repository.SearchRepository;
-import enrolment.enrolmentschool.src.repository.SubjectRepository;
+import enrolment.enrolmentschool.src.repository.SubjectsRepository;
 import enrolment.enrolmentschool.src.dto.response.GetSubjectResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -20,7 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SubjectService {
 
-    private final SubjectRepository subjectRepository;
+    private final SubjectsRepository subjectRepository;
 
     private final SearchRepository searchRepository;
     private final SubjectDao subjectDao;
