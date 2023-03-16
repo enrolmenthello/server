@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Api(tags="3. member API")
 @RestController
-@Slf4j
+@RequestMapping("/subjects")
 @RequiredArgsConstructor
 public class SubjectController {
 
@@ -28,7 +28,7 @@ public class SubjectController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK", response = GetSubjectResponse.class)
     })
-    @GetMapping(value="/subjectList")
+    @GetMapping(value="/alllist")
     private ResponseEntity<?> getSubjectList(){
         return ResponseEntity.ok(new BaseResponse(subjectService.getSubjectList()));
     }
@@ -40,7 +40,7 @@ public class SubjectController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK", response = GetSubjectResponse.class)
     })
-    @GetMapping("/subject/search")
+    @GetMapping("/search")
     private ResponseEntity<?> getSubject(@RequestBody PostSubjectRequest postSubjectRequest)  {
         return ResponseEntity.ok(new BaseResponse(subjectService.getSubject(postSubjectRequest)));
     }

@@ -26,7 +26,7 @@ import java.util.List;
 
 @Api(tags="2. member API")
 @RestController
-@Slf4j
+@RequestMapping("/members")
 @RequiredArgsConstructor
 public class MemberController {
     private final MemberServiceImpl memberServiceImpl;

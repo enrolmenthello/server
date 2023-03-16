@@ -20,7 +20,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Api(tags="1. enrolment API")
-@Slf4j
+@RequestMapping("/enrolment")
 @RestController
 @RequiredArgsConstructor
 public class EnrolmentController {
@@ -32,7 +32,7 @@ public class EnrolmentController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK", response = PostEnrolmentResponse.class)
     })
-    @PostMapping(value="/enrolment")
+    @PostMapping(value="")
 public ResponseEntity<?> enrolment(@RequestBody PostEnrolmentRequest postEnrolmentRequest) {
             return ResponseEntity.ok(new BaseResponse(enrolmentService.enrolment(postEnrolmentRequest)));
         }
@@ -41,7 +41,7 @@ public ResponseEntity<?> enrolment(@RequestBody PostEnrolmentRequest postEnrolme
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK", response = CancelEnrolmentResponse.class)
     })
-        @PostMapping(value="/enrolment/cancel")
+        @PostMapping(value="/cancel")
     public  ResponseEntity<?> cancelEnrolment(@RequestBody PostEnrolmentCancelRequest postEnrolmentCancelRequest){
         return ResponseEntity.ok(enrolmentService.cancelEnrolment(postEnrolmentCancelRequest));
     }
@@ -50,7 +50,7 @@ public ResponseEntity<?> enrolment(@RequestBody PostEnrolmentRequest postEnrolme
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK", response = GetEnrolmentListResponse.class)
     })
-    @GetMapping("/enrolment/search/all")
+    @GetMapping("/searchAll")
     public ResponseEntity<?> enrolmentSearchAll(@RequestBody GetEnrolmentListRequest getEnrolmentListRequest){
         return ResponseEntity.ok(new BaseResponse(enrolmentService.enrolmentSearchAll(getEnrolmentListRequest)));
     }

@@ -23,7 +23,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Api(tags="4. preload API")
-@Slf4j
+@RequestMapping("/preload")
 @RestController
 @RequiredArgsConstructor
 public class PreLoadController {
@@ -33,7 +33,7 @@ public class PreLoadController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK", response = PostPreloadResponse.class)
     })
-    @PostMapping(value="/preload")
+    @PostMapping(value="")
     public ResponseEntity<?> preload(@RequestBody PostPreloadRequest postPreloadRequest) {
         return ResponseEntity.ok(new BaseResponse(preloadService.preload(postPreloadRequest)));
     }
@@ -42,7 +42,7 @@ public class PreLoadController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK", response = CancelPreloadResponse.class)
     })
-    @PostMapping(value="/preload/cancel")
+    @PostMapping(value="cancel")
     public  ResponseEntity<?> cancelPreload(@RequestBody PostPreloadCancelRequest postPreloadCancelRequest){
         return ResponseEntity.ok(preloadService.cancelPreload(postPreloadCancelRequest));
     }
@@ -51,7 +51,7 @@ public class PreLoadController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK", response = GetPreloadListResponse.class)
     })
-    @GetMapping("/preload/search/all")
+    @GetMapping("searchAll")
     public ResponseEntity<?> prelaodSearchAll(@RequestBody GetPreloadListRequest getPreloadListRequest){
         return ResponseEntity.ok(new BaseResponse(preloadService.prelaodSearchAll(getPreloadListRequest)));
     }
