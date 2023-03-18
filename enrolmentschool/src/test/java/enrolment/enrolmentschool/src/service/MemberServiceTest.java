@@ -1,55 +1,77 @@
-//package enrolment.enrolmentschool.src.service;
-//
-//import enrolment.enrolmentschool.src.request.PostMemberJoinRequest;
-//import enrolment.enrolmentschool.src.repository.MemberRepository;
-//import org.junit.Test;
-//import org.junit.runner.RunWith;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.boot.test.context.SpringBootTest;
-//import org.springframework.test.context.junit4.SpringRunner;
-//
-//import javax.transaction.Transactional;
-//
-//import static org.junit.Assert.*;
-//
+package enrolment.enrolmentschool.src.service;
+
+import enrolment.enrolmentschool.src.dao.MemberDao;
+import enrolment.enrolmentschool.src.domain.Member;
+import enrolment.enrolmentschool.src.dto.request.PostMemberJoinRequest;
+import enrolment.enrolmentschool.src.dto.response.PostMemberResponse;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
+import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.lenient;
+
 //@RunWith(SpringRunner.class)
 //@SpringBootTest
 //@Transactional
-//public class MemberServiceTest {
-//    @Autowired
-//    MemberService memberService;
-//    @Autowired
-//    MemberRepository memberRepository;
-//
+
+@ExtendWith(MockitoExtension.class)
+ public class MemberServiceTest {
+
+    @InjectMocks
+    MemberServiceImpl memberService;
+
+    @Mock
+    MemberDao memberDao;
+
+    @DisplayName("회원가입 성공")
+    @Test
+    void 회원가입() {
+        //given
+        PostMemberJoinRequest request=createMemberSignUpRequest();
+        Member actualMembmer=request.toEntity();
+
+        //stub
+        lenient().when(memberDao.save(any())).thenReturn(actualMembmer);
+
+        //when
+        PostMemberResponse postMemberResponse=memberService.join(request);
+
+        //then
+        assertAll(
+                () -> assertEquals(actualMembmer.getPassword(),postMemberResponse.getPassword()),
+                () -> assertEquals(actualMembmer.getName(),postMemberResponse.getName()),
+                () -> assertEquals(actualMembmer.getId(),postMemberResponse.getId())
+        );
+    }
+
+//    @DisplayName("회원 닉네임 중복")
 //    @Test
-//    public void 회원가입() throws Exception {
-//        //Given
-//        PostMemberJoinRequest member = new PostMemberJoinRequest();
-//        member.setName("kim2");
-//        //When
-//        Long saveId = memberService.join(member);
-//        //Then
-//        assertEquals(member, memberRepository.findOne(saveId));
+//    void 회원가입 닉네임중복(){
+//
 //    }
-//
-//
-////    @Test(expected = IllegalStateException.class)
-////    public void 중복_회원_예외() throws Exception{
-////        //given
-////        Member member1=new Member();
-////        member1.setName("kim2");
-////
-////        Member member2=new Member();
-////        member2.setName("kim2");
-////
-////        //when
-////        memberService.join(member1);
-////        memberService.join(member2);
-////
-////
-////        //Then
-////        fail("예외가 발생해야 한다.");
-////
-////
-////    }
-//}
+
+    PostMemberJoinRequest createMemberSignUpRequest() {
+        return PostMemberJoinRequest.builder()
+                .id("11111111")
+                .name("김선태")
+                .password("0000")
+                .build();
+    }
+
+
+}
