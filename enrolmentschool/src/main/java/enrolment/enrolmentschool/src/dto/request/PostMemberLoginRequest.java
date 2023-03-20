@@ -1,6 +1,7 @@
 package enrolment.enrolmentschool.src.dto.request;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class PostMemberLoginRequest {
     @NotNull(message="학생 학번을 입력해주세요.")
     private String id;
