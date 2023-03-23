@@ -1,13 +1,13 @@
 package enrolment.enrolmentschool.src.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import enrolment.enrolmentschool.src.domain.Enrolment;
 import enrolment.enrolmentschool.src.domain.Member;
 import enrolment.enrolmentschool.src.domain.Subject;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiParam;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -15,6 +15,9 @@ import java.time.LocalTime;
 
 @Getter @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class PostEnrolmentRequest {
     @ApiParam(value="학번", example = "0")
     @ApiModelProperty(example = "12345678")
@@ -41,8 +44,6 @@ public class PostEnrolmentRequest {
 //
 //    @ApiParam(value="수강신청Id", example = "0")
 //    private Long enrolmentId;
-
-
 
 
 

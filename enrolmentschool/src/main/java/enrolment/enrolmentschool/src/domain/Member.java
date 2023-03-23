@@ -15,6 +15,7 @@ import java.util.List;
 @Entity
 @Getter
 public class Member {
+
     @Id
     @Column(name="member_id")
     private String id;
@@ -23,7 +24,6 @@ public class Member {
     private String password;
 
     private int totalGrade;
-
 
     @OneToMany(mappedBy = "member")
     private List<Enrolment> enrolments=new ArrayList<>();
