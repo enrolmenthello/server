@@ -6,8 +6,11 @@ import enrolment.enrolmentschool.src.dao.SubjectDao;
 import enrolment.enrolmentschool.src.domain.Enrolment;
 import enrolment.enrolmentschool.src.domain.Member;
 import enrolment.enrolmentschool.src.domain.Subject;
+import enrolment.enrolmentschool.src.dto.request.PostEnrolmentCancelRequest;
 import enrolment.enrolmentschool.src.dto.request.PostEnrolmentRequest;
+import enrolment.enrolmentschool.src.dto.response.CancelEnrolmentResponse;
 import enrolment.enrolmentschool.src.dto.response.PostEnrolmentResponse;
+import enrolment.enrolmentschool.src.exception.preload.NotFoundMemberException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,208 +33,7 @@ import static org.hamcrest.Matchers.any;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-
-//@RunWith(MockitoJUnitRunner.class)
-//public class EnrolmentServiceTest {
-//
-//    @Mock
-//    private MemberDao memberDao;
-//
-//    @Mock
-//    private SubjectDao subjectDao;
-//
-//    @Mock
-//    private EnrolmentDao enrolmentDao;
-//
-//    @InjectMocks
-//    private EnrolmentService enrolmentService;
-
-
-
-//    @Test
-//    public void 수강신청_성공() {
-//        // given
-//        String memberId = "1";
-//        long subjectId = 2L;
-//        Member member = Member.builder()
-//                .id(memberId)
-//                .name("John Doe")
-//                .totalGrade(0)
-//                .build();
-//        Subject subject = Subject.builder()
-//                .id(subjectId)
-//                .name("Computer Science")
-//                .stockQuantity(1)
-//                .gradePoint(3)
-//                .professor("Jane Smith")
-//                .time(LocalTime.ofSecondOfDay(12))
-//                .build();
-//        PostEnrolmentRequest request = PostEnrolmentRequest.builder()
-//                .memberId(memberId)
-//                .subjectId(subjectId)
-//                .build();
-//
-//        when(memberDao.findById(memberId)).thenReturn(Optional.of(member));
-//        when(subjectDao.findById(subjectId)).thenReturn(Optional.of(subject));
-//        when(enrolmentDao.findByMemberAndSubject(member, subject)).thenReturn(Optional.empty());
-//
-//        // when
-//        PostEnrolmentResponse response = enrolmentService.enrolment(request);
-//
-//        // then
-//        assertThat(response.getMessage()).isEqualTo("수강신청이 완료되었습니다.");
-//        assertThat(response.getProfessor()).isEqualTo("Jane Smith");
-//        assertThat(response.getGradePoint()).isEqualTo(3);
-//        assertThat(response.getName()).isEqualTo("Computer Science");
-//        assertThat(response.getTime()).isEqualTo("Mon 10:00-12:00");
-//
-//        assertThat(member.getTotalGrade()).isEqualTo(3);
-//
-//        verify(memberDao).findById(memberId);
-//        verify(subjectDao).findById(subjectId);
-//        verify(enrolmentDao).findByMemberAndSubject(member, subject);
-//        verify(enrolmentDao).save(any(Enrolment.class));
-//    }
-
-//    @Test
-//    void 수강신청_성공2() {
-//        // given
-//        String memberId = "1";
-//        Long subjectId = 1L;
-//        Member member = Member.builder()
-//                .id(memberId)
-//                .name("John Doe")
-//                .totalGrade(17)
-//                .build();
-//        Subject subject = Subject.builder()
-//                .id(subjectId)
-//                .name("Math")
-//                .stockQuantity(5)
-//                .gradePoint(3)
-//                .professor("Dr. Lee")
-//                .time(LocalTime.parse("10:00"))
-//                .build();
-//        PostEnrolmentRequest request = PostEnrolmentRequest.builder()
-//                .memberId(memberId)
-//                .subjectId(subjectId)
-//                .build();
-//
-//        when(memberDao.findById(memberId)).thenReturn(Optional.of(member));
-//        when(subjectDao.findById(subjectId)).thenReturn(Optional.of(subject));
-//        when(enrolmentDao.findByMemberAndSubject(member, subject)).thenReturn(Optional.empty());
-//
-//        // when
-//        PostEnrolmentResponse response = enrolmentService.enrolment(request);
-//
-//        // then
-//        verify(memberDao).findById(memberId);
-//        verify(subjectDao).findById(subjectId);
-//        verify(enrolmentDao).findByMemberAndSubject(member, subject);
-//
-//        assertEquals("수강신청이 완료되었습니다.", response.getMessage());
-//        assertEquals("Dr. Lee", response.getProfessor());
-//        assertEquals(3, response.getGradePoint());
-//        assertEquals("Math", response.getName());
-//        assertEquals("10:00", response.getTime());
-//
-//        verify(member).updateTotalGrade(3);
-//        verify(subject).removeSubject();
-//        verify(enrolmentDao).save(any(Enrolment.class));
-//    }
-//@Test
-//void 수강신청_성공3() {
-//    // Given
-////    Member member = new Member(1L, "John", 0);
-////    Subject subject = new Subject(1L, "Math", 10, 3, "Professor A", "Mon 9-11");
-////    PostEnrolmentRequest request = new PostEnrolmentRequest(1L, 1L);
-//    String memberId = "1";
-//        Long subjectId = 1L;
-//        Member member = Member.builder()
-//                .id(memberId)
-//                .name("John Doe")
-//                .password("4321")
-//                .totalGrade(17)
-//                .build();
-//        Subject subject = Subject.builder()
-//                .id(subjectId)
-//                .name("Math")
-//                .stockQuantity(5)
-//                .gradePoint(3)
-//                .professor("Dr. Lee")
-//                .time(LocalTime.parse("10:00"))
-//                .build();
-//        PostEnrolmentRequest request = PostEnrolmentRequest.builder()
-//                .memberId(memberId)
-//                .subjectId(subjectId)
-//                .build();
-//
-//    when(memberDao.findById(request.getMemberId())).thenReturn(Optional.of(member));
-//    when(subjectDao.findById(request.getSubjectId())).thenReturn(Optional.of(subject));
-//    when(enrolmentDao.findByMemberAndSubject(member, subject)).thenReturn(Optional.empty());
-//
-//    // When
-//    PostEnrolmentResponse response = enrolmentService.enrolment(request);
-//
-//    // Then
-//    assertEquals("수강신청이 완료되었습니다.", response.getMessage());
-//    assertEquals("Professor A", response.getProfessor());
-//    assertEquals(3, response.getGradePoint());
-//    assertEquals("Math", response.getName());
-//    assertEquals("Mon 9-11", response.getTime());
-//}
-
-//    @RunWith(SpringRunner.class)
-//    @SpringBootTest
-//    public class EnrolmentServiceTest {
-//
-//        @Autowired
-//        private EnrolmentService enrolmentService;
-//
-//        @Autowired
-//        private MemberDao memberDao;
-//
-//        @Autowired
-//        private SubjectDao subjectDao;
-//
-//        @Autowired
-//        private EnrolmentDao enrolmentDao;
-//
-//        @Test
-//        public void testEnrolment() {
-//            // Given
-//            Member member =  Member.builder()
-//                    .name("John")
-//                    .password("password")
-//                    .build();
-//            memberDao.save(member);
-//
-//            Subject subject =Subject.builder()
-//                    .name("test")
-//                    .professor("최성운")
-//                    .gradePoint(3)
-//                    .stockQuantity(2)
-//                    .build();
-//            subjectDao.save(subject);
-//
-//            PostEnrolmentRequest request = new PostEnrolmentRequest();
-//            request.setMemberId(member.getId());
-//            request.setSubjectId(subject.getId());
-//
-//            // When
-//            PostEnrolmentResponse response = enrolmentService.enrolment(request);
-//
-//            // Then
-//            assertEquals("수강신청이 완료되었습니다.", response.getMessage());
-//            assertEquals("최성운", response.getProfessor());
-//            assertEquals(3, response.getGradePoint());
-//            assertEquals("test", response.getName());
-//            assertNotNull(response.getTime());
-//
-//            Optional<Enrolment> enrolment = enrolmentDao.findByMemberAndSubject(member, subject);
-//            assertTrue(enrolment.isPresent());
-//        }
-
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class EnrolmentServiceTest {
 
     @Mock
@@ -287,57 +89,169 @@ public class EnrolmentServiceTest {
         // Assert
 
         assertEquals("수강신청이 완료되었습니다.", response.getMessage());
-        assertEquals("Jane", response.getProfessor());
+        assertEquals("최성운", response.getProfessor());
         assertEquals(3, response.getGradePoint());
         assertEquals("Math", response.getName());
-        assertEquals("MWF 10:00-11:30", response.getTime());
+        assertEquals(LocalTime.parse("10:00"), response.getTime());
     }
 
 
 
 
     /**
-     * 위에까지 수강신청 성공 테스트 case
+     * 수강신청 취소하는 경우 test
+     * @
      */
+//    @DisplayName("수강신청 취소")
+//    @Test
+//    public void testCancelEnrolment() {
+//        // Arrange
+//        long enrolmentId = 1L;
+//
+//        Enrolment enrolment = Enrolment.builder()
+//                .enrolmentId(enrolmentId)
+//                .subject(Subject.builder().id(1L).name("Math").build())
+//                .member(Member.builder().id("60171917").name("이승학").build())
+//                .professor("최성운")
+//                .name("Math")
+//                .time(LocalTime.parse("10:00"))
+//                .gradePoint(3)
+//                .build();
+//        when(enrolmentDao.findById(enrolmentId)).thenReturn(Optional.of(enrolment));
+//
+//        // Act
+//        CancelEnrolmentResponse response = enrolmentService.cancelEnrolment(enrolmentId);
+//
+//        // Assert
+//        assertEquals("수강신청이 취소되었습니다.", response.getMessage());
+//        assertEquals("Math", response.getName());
+//    }
+    @DisplayName("수강신청 취소 성공")
+    @Test
+    public void testCancelEnrolment() {
+        // Arrange
+        Member member = Member.builder()
+                .id("60171917")
+                .password("4321")
+                .name("이승학")
+                .build();
+        lenient().when(memberDao.findById("60171917")).thenReturn(Optional.of(member));
 
-//    @Test(expected = NotFoundMemberException.class)
-//    public void testEnrolment_WithNotFoundMemberException() {
-//        // given
-//        long memberId = 1L;
-//        long subjectId = 2L;
-//        PostEnrolmentRequest request = PostEnrolmentRequest.builder()
-//                .memberId(memberId)
-//                .subjectId(subjectId)
-//                .build();
+        Subject subject = Subject.builder()
+                .id(1L)
+                .name("Math")
+                .stockQuantity(20)
+                .gradePoint(3)
+                .professor("최성운")
+                .time(LocalTime.parse("10:00"))
+                .build();
+        when(subjectDao.findById(1L)).thenReturn(Optional.of(subject));
+
+        Enrolment enrolment = Enrolment.builder()
+                .subject(subject)
+                .member(member)
+                .professor(subject.getProfessor())
+                .name(subject.getName())
+                .time(subject.getTime())
+                .gradePoint(subject.getGradePoint())
+                .build();
+        when(enrolmentDao.findByMemberAndSubject(member, subject)).thenReturn(Optional.of(enrolment));
+
+        PostEnrolmentCancelRequest postEnrolmentCancelRequest = new PostEnrolmentCancelRequest();
+        postEnrolmentCancelRequest.setMemberId("60171917");
+        postEnrolmentCancelRequest.setSubjectId(1L);
+
+        // Act
+        CancelEnrolmentResponse response = enrolmentService.cancelEnrolment(postEnrolmentCancelRequest);
+
+        // Assert
+        assertEquals("수강취소가 완료되었습니다.", response.getMessage());
+        assertEquals("최성운", response.getProfessor());
+        assertEquals(3, response.getGradePoint());
+        assertEquals("Math", response.getName());
+        assertEquals(LocalTime.parse("10:00"), response.getTime());
+    }
+
+
+
+    /**
+     * 수강신청 실패하는 경우
+     */
+//    @DisplayName("수강신청 실패 - 잘못된 회원 ID")
+//    @Test
+//    public void testEnrolmentFailWithWrongMemberId() {
+//        // Arrange
+//        PostEnrolmentRequest postEnrolmentRequest = new PostEnrolmentRequest();
+//        postEnrolmentRequest.setMemberId("12345678"); // 존재하지 않는 회원 ID
 //
-//        when(memberDao.findById(memberId)).thenReturn(Optional.empty());
+//        when(memberDao.findById("12345678")).thenReturn(Optional.empty());
 //
-//        // when
-//        enrolmentService.enrolment(request);
+//        // Act
+//        Throwable throwable = assertThrows(IllegalArgumentException.class,
+//                () -> enrolmentService.enrolment(postEnrolmentRequest));
 //
-//        // then
-//        // NotFoundMemberException expected
+//        // Assert
+//        assertEquals("Invalid member ID", throwable.getMessage());
 //    }
 //
-//    @Test(expected = NotFoundSubjectException.class)
-//    public void testEnrolment_WithNotFoundSubjectException() {
-//        // given
-//        long memberId = 1L;
-//        long subjectId = 2L;
-//        PostEnrolmentRequest request = PostEnrolmentRequest.builder()
-//                .memberId(memberId)
-//                .subjectId(subjectId)
+//    @DisplayName("수강신청 실패 - 잘못된 과목 ID")
+//    @Test
+//    public void testEnrolmentFailWithWrongSubjectId() {
+//        // Arrange
+//        PostEnrolmentRequest postEnrolmentRequest = new PostEnrolmentRequest();
+//        postEnrolmentRequest.setMemberId("60171917");
+//        postEnrolmentRequest.setSubjectId(9999L); // 존재하지 않는 과목 ID
+//
+//        Member member = Member.builder()
+//                .id("60171917")
+//                .password("4321")
+//                .name("이승학")
 //                .build();
+//        lenient().when(memberDao.findById("60171917")).thenReturn(Optional.of(member));
 //
-//        when(memberDao.findById(memberId)).thenReturn(Optional.of(Member.builder().build()));
-//        when(subjectDao.findById(subjectId)).thenReturn(Optional.empty());
+//        when(subjectDao.findById(9999L)).thenReturn(Optional.empty());
 //
-//        // when
-//        enrolmentService.enrolment(request);
+//        // Act
+//        Throwable throwable = assertThrows(IllegalArgumentException.class,
+//                () -> enrolmentService.enrolment(postEnrolmentRequest));
 //
-//        // then
-//        // NotFoundSubjectException expected
+//        // Assert
+//        assertEquals("Invalid subject ID", throwable.getMessage());
 //    }
+//
+//    @DisplayName("수강신청 실패 - 해당 과목에 모든 수강생이 등록된 경우")
+//    @Test
+//    public void testEnrolmentFailWhenNoStockLeft() {
+//        // Arrange
+//        PostEnrolmentRequest postEnrolmentRequest = new PostEnrolmentRequest();
+//        postEnrolmentRequest.setMemberId("60171917");
+//        postEnrolmentRequest.setSubjectId(1L);
+//
+//        Member member = Member.builder()
+//                .id("60171917")
+//                .password("4321")
+//                .name("이승학")
+//                .build();
+//        lenient().when(memberDao.findById("60171917")).thenReturn(Optional.of(member));
+//
+//        Subject subject = Subject.builder()
+//                .id(1L)
+//                .name("Math")
+//                .stockQuantity(0) // 모든 수강생이 등록된 경우
+//                .gradePoint(3)
+//                .professor("최성운")
+//                .time(LocalTime.parse("10:00"))
+//                .build();
+//        when(subjectDao.findById(1L)).thenReturn(Optional.of(subject));
+//
+//        // Act
+//        Throwable throwable = assertThrows(IllegalStateException.class,
+//                () -> enrolmentService.enrolment(postEnrolmentRequest));
+//
+//        // Assert
+//        assertEquals("No stock left for the subject", throwable.getMessage());
+//    }
+//
 
 }
 
