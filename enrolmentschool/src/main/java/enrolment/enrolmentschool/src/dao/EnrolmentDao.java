@@ -18,4 +18,6 @@ public interface EnrolmentDao extends JpaRepository<Enrolment,Long> {
     Optional<Enrolment> findByMemberAndSubject(Member member, Subject subject);
 
     void save(Matcher<Enrolment> any);
+
+    Optional<Enrolment> findByMemberId(String id);
 }

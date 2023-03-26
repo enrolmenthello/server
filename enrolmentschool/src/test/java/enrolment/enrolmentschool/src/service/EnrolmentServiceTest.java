@@ -10,7 +10,8 @@ import enrolment.enrolmentschool.src.dto.request.PostEnrolmentCancelRequest;
 import enrolment.enrolmentschool.src.dto.request.PostEnrolmentRequest;
 import enrolment.enrolmentschool.src.dto.response.CancelEnrolmentResponse;
 import enrolment.enrolmentschool.src.dto.response.PostEnrolmentResponse;
-import enrolment.enrolmentschool.src.exception.preload.NotFoundMemberException;
+import enrolment.enrolmentschool.src.exception.member.NotFoundMemberException;
+import enrolment.enrolmentschool.src.exception.member.NotFoundMemberIdException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -95,37 +96,6 @@ public class EnrolmentServiceTest {
         assertEquals(LocalTime.parse("10:00"), response.getTime());
     }
 
-
-
-
-    /**
-     * 수강신청 취소하는 경우 test
-     * @
-     */
-//    @DisplayName("수강신청 취소")
-//    @Test
-//    public void testCancelEnrolment() {
-//        // Arrange
-//        long enrolmentId = 1L;
-//
-//        Enrolment enrolment = Enrolment.builder()
-//                .enrolmentId(enrolmentId)
-//                .subject(Subject.builder().id(1L).name("Math").build())
-//                .member(Member.builder().id("60171917").name("이승학").build())
-//                .professor("최성운")
-//                .name("Math")
-//                .time(LocalTime.parse("10:00"))
-//                .gradePoint(3)
-//                .build();
-//        when(enrolmentDao.findById(enrolmentId)).thenReturn(Optional.of(enrolment));
-//
-//        // Act
-//        CancelEnrolmentResponse response = enrolmentService.cancelEnrolment(enrolmentId);
-//
-//        // Assert
-//        assertEquals("수강신청이 취소되었습니다.", response.getMessage());
-//        assertEquals("Math", response.getName());
-//    }
     @DisplayName("수강신청 취소 성공")
     @Test
     public void testCancelEnrolment() {
@@ -177,81 +147,84 @@ public class EnrolmentServiceTest {
     /**
      * 수강신청 실패하는 경우
      */
-//    @DisplayName("수강신청 실패 - 잘못된 회원 ID")
-//    @Test
-//    public void testEnrolmentFailWithWrongMemberId() {
-//        // Arrange
-//        PostEnrolmentRequest postEnrolmentRequest = new PostEnrolmentRequest();
-//        postEnrolmentRequest.setMemberId("12345678"); // 존재하지 않는 회원 ID
-//
-//        when(memberDao.findById("12345678")).thenReturn(Optional.empty());
-//
-//        // Act
-//        Throwable throwable = assertThrows(IllegalArgumentException.class,
-//                () -> enrolmentService.enrolment(postEnrolmentRequest));
-//
-//        // Assert
-//        assertEquals("Invalid member ID", throwable.getMessage());
-//    }
-//
-//    @DisplayName("수강신청 실패 - 잘못된 과목 ID")
-//    @Test
-//    public void testEnrolmentFailWithWrongSubjectId() {
-//        // Arrange
-//        PostEnrolmentRequest postEnrolmentRequest = new PostEnrolmentRequest();
-//        postEnrolmentRequest.setMemberId("60171917");
-//        postEnrolmentRequest.setSubjectId(9999L); // 존재하지 않는 과목 ID
-//
-//        Member member = Member.builder()
-//                .id("60171917")
-//                .password("4321")
-//                .name("이승학")
-//                .build();
-//        lenient().when(memberDao.findById("60171917")).thenReturn(Optional.of(member));
-//
-//        when(subjectDao.findById(9999L)).thenReturn(Optional.empty());
-//
-//        // Act
-//        Throwable throwable = assertThrows(IllegalArgumentException.class,
-//                () -> enrolmentService.enrolment(postEnrolmentRequest));
-//
-//        // Assert
-//        assertEquals("Invalid subject ID", throwable.getMessage());
-//    }
-//
-//    @DisplayName("수강신청 실패 - 해당 과목에 모든 수강생이 등록된 경우")
-//    @Test
-//    public void testEnrolmentFailWhenNoStockLeft() {
-//        // Arrange
-//        PostEnrolmentRequest postEnrolmentRequest = new PostEnrolmentRequest();
-//        postEnrolmentRequest.setMemberId("60171917");
-//        postEnrolmentRequest.setSubjectId(1L);
-//
-//        Member member = Member.builder()
-//                .id("60171917")
-//                .password("4321")
-//                .name("이승학")
-//                .build();
-//        lenient().when(memberDao.findById("60171917")).thenReturn(Optional.of(member));
-//
-//        Subject subject = Subject.builder()
-//                .id(1L)
-//                .name("Math")
-//                .stockQuantity(0) // 모든 수강생이 등록된 경우
-//                .gradePoint(3)
-//                .professor("최성운")
-//                .time(LocalTime.parse("10:00"))
-//                .build();
-//        when(subjectDao.findById(1L)).thenReturn(Optional.of(subject));
-//
-//        // Act
-//        Throwable throwable = assertThrows(IllegalStateException.class,
-//                () -> enrolmentService.enrolment(postEnrolmentRequest));
-//
-//        // Assert
-//        assertEquals("No stock left for the subject", throwable.getMessage());
-//    }
-//
+
+    /**
+     * 수강신청 회원이 없는 경우
+     */
+    @DisplayName("수강신청 실패 - 잘못된 회원 ID")
+    @Test
+    public void testEnrolmentFailWithWrongMemberId() {
+        // given
+        PostEnrolmentRequest postEnrolmentRequest = new PostEnrolmentRequest();
+        postEnrolmentRequest.setMemberId("12345678"); // 존재하지 않는 회원 ID
+
+        //when
+        when(memberDao.findById("12345678")).thenReturn(Optional.empty());
+
+        // then
+        assertThrows(NotFoundMemberException.class,
+                () -> enrolmentService.enrolment(postEnrolmentRequest));
+
+    }
+
+    @DisplayName("수강신청 실패 - 잘못된 과목 ID")
+    @Test
+    public void testEnrolmentFailWithWrongSubjectId() {
+        // Arrange
+        PostEnrolmentRequest postEnrolmentRequest = new PostEnrolmentRequest();
+        postEnrolmentRequest.setMemberId("60171917");
+        postEnrolmentRequest.setSubjectId(9999L); // 존재하지 않는 과목 ID
+
+        Member member = Member.builder()
+                .id("60171917")
+                .password("4321")
+                .name("이승학")
+                .build();
+        lenient().when(memberDao.findById("60171917")).thenReturn(Optional.of(member));
+
+        when(subjectDao.findById(9999L)).thenReturn(Optional.empty());
+
+        // Act
+        Throwable throwable = assertThrows(IllegalArgumentException.class,
+                () -> enrolmentService.enrolment(postEnrolmentRequest));
+
+        // Assert
+        assertEquals("Invalid subject ID", throwable.getMessage());
+    }
+
+    @DisplayName("수강신청 실패 - 해당 과목에 모든 수강생이 등록된 경우")
+    @Test
+    public void testEnrolmentFailWhenNoStockLeft() {
+        // Arrange
+        PostEnrolmentRequest postEnrolmentRequest = new PostEnrolmentRequest();
+        postEnrolmentRequest.setMemberId("60171917");
+        postEnrolmentRequest.setSubjectId(1L);
+
+        Member member = Member.builder()
+                .id("60171917")
+                .password("4321")
+                .name("이승학")
+                .build();
+        lenient().when(memberDao.findById("60171917")).thenReturn(Optional.of(member));
+
+        Subject subject = Subject.builder()
+                .id(1L)
+                .name("Math")
+                .stockQuantity(0) // 모든 수강생이 등록된 경우
+                .gradePoint(3)
+                .professor("최성운")
+                .time(LocalTime.parse("10:00"))
+                .build();
+        when(subjectDao.findById(1L)).thenReturn(Optional.of(subject));
+
+        // Act
+        Throwable throwable = assertThrows(IllegalStateException.class,
+                () -> enrolmentService.enrolment(postEnrolmentRequest));
+
+        // Assert
+        assertEquals("No stock left for the subject", throwable.getMessage());
+    }
+
 
 }
 
