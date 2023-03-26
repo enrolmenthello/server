@@ -10,8 +10,12 @@ import enrolment.enrolmentschool.src.dto.request.PostEnrolmentCancelRequest;
 import enrolment.enrolmentschool.src.dto.request.PostEnrolmentRequest;
 import enrolment.enrolmentschool.src.dto.response.CancelEnrolmentResponse;
 import enrolment.enrolmentschool.src.dto.response.PostEnrolmentResponse;
+import enrolment.enrolmentschool.src.exception.member.MaximumTotalGradeException;
 import enrolment.enrolmentschool.src.exception.member.NotFoundMemberException;
 import enrolment.enrolmentschool.src.exception.member.NotFoundMemberIdException;
+import enrolment.enrolmentschool.src.exception.subject.AlreadyExistSubjectException;
+import enrolment.enrolmentschool.src.exception.subject.LimitSubjectStockQuantityException;
+import enrolment.enrolmentschool.src.exception.subject.NotFoundSubjectException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,6 +34,7 @@ import java.time.LocalTime;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
 import static org.hamcrest.Matchers.any;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -151,7 +156,7 @@ public class EnrolmentServiceTest {
     /**
      * 수강신청 회원이 없는 경우
      */
-    @DisplayName("수강신청 실패 - 잘못된 회원 ID")
+    @DisplayName("수강신청 실패 - 회원이 없을 경우")
     @Test
     public void testEnrolmentFailWithWrongMemberId() {
         // given
@@ -167,7 +172,7 @@ public class EnrolmentServiceTest {
 
     }
 
-    @DisplayName("수강신청 실패 - 잘못된 과목 ID")
+    @DisplayName("수강신청 실패 - 과목이 없을 경우")
     @Test
     public void testEnrolmentFailWithWrongSubjectId() {
         // Arrange
@@ -185,12 +190,58 @@ public class EnrolmentServiceTest {
         when(subjectDao.findById(9999L)).thenReturn(Optional.empty());
 
         // Act
-        Throwable throwable = assertThrows(IllegalArgumentException.class,
+        assertThrows(NotFoundSubjectException.class,
                 () -> enrolmentService.enrolment(postEnrolmentRequest));
 
-        // Assert
-        assertEquals("Invalid subject ID", throwable.getMessage());
     }
+
+    @DisplayName("수강신청 실패 - 해당 과목이 이미 수강신청된 경우")
+    @Test
+    public void testEnrolmentWithAlreadyEnrolledSubject() {
+        // Given
+        String memberId = "60171917";
+        Long subjectId = 2L;
+
+        Member member = Member.builder()
+                .id(memberId)
+                .name("이승학")
+                .totalGrade(15)
+                .build();
+
+        Subject subject = Subject.builder()
+                .id(subjectId)
+                .name("d")
+                .stockQuantity(9)
+                .gradePoint(3)
+                .professor("최성운21")
+                .time(LocalTime.parse("10:00"))
+                .build();
+
+        Enrolment enrolment = Enrolment.builder()
+                .subject(subject)
+                .member(member)
+                .professor(subject.getProfessor())
+                .name(subject.getName())
+                .time(subject.getTime())
+                .gradePoint(subject.getGradePoint())
+                .build();
+
+        when(memberDao.findById(memberId)).thenReturn(Optional.of(member));
+        when(subjectDao.findById(subjectId)).thenReturn(Optional.of(subject));
+        when(enrolmentDao.findByMemberAndSubject(member, subject)).thenReturn(Optional.of(enrolment));
+
+        PostEnrolmentRequest request = PostEnrolmentRequest.builder()
+                .memberId(memberId)
+                .subjectId(subjectId)
+                .build();
+
+        // When
+        Throwable throwable = catchThrowable(() -> enrolmentService.enrolment(request));
+
+        // Then
+        assertThat(throwable).isInstanceOf(AlreadyExistSubjectException.class);
+    }
+
 
     @DisplayName("수강신청 실패 - 해당 과목에 모든 수강생이 등록된 경우")
     @Test
@@ -218,13 +269,87 @@ public class EnrolmentServiceTest {
         when(subjectDao.findById(1L)).thenReturn(Optional.of(subject));
 
         // Act
-        Throwable throwable = assertThrows(IllegalStateException.class,
+        assertThrows(LimitSubjectStockQuantityException.class,
                 () -> enrolmentService.enrolment(postEnrolmentRequest));
 
-        // Assert
-        assertEquals("No stock left for the subject", throwable.getMessage());
+
     }
 
+    @DisplayName("수강신청 실패-해당 학생의 수강학점이 18학점 이상일 경우")
+    @Test
+    public void testEnrolmentWithMaximumTotalGrade() {
+        // Given
+        String memberId = "1L";
+        Long subjectId = 2L;
+
+        Member member = Member.builder()
+                .id(memberId)
+                .name("John")
+                .totalGrade(18) // 이미 18학점을 취득한 경우
+                .build();
+
+        Subject subject = Subject.builder()
+                .id(subjectId)
+                .name("Math")
+                .stockQuantity(10)
+                .gradePoint(3)
+                .professor("Jane")
+                .time(LocalTime.parse("10:00"))
+                .build();
+
+        when(memberDao.findById(memberId)).thenReturn(Optional.of(member));
+        when(subjectDao.findById(subjectId)).thenReturn(Optional.of(subject));
+        when(enrolmentDao.findByMemberAndSubject(member, subject)).thenReturn(Optional.empty());
+
+        PostEnrolmentRequest request = PostEnrolmentRequest.builder()
+                .memberId(memberId)
+                .subjectId(subjectId)
+                .build();
+
+        // When
+        Throwable throwable = catchThrowable(() -> enrolmentService.enrolment(request));
+
+        // Then
+        assertThat(throwable).isInstanceOf(MaximumTotalGradeException.class);
+    }
+
+    @DisplayName("수강신청 실패- 수강신청한 과목이 더이상 없을 경우")
+    @Test
+    public void testEnrolmentWithLimitSubjectStockQuantity() {
+        // Given
+        String memberId = "1L";
+        Long subjectId = 2L;
+
+        Member member = Member.builder()
+                .id(memberId)
+                .name("John")
+                .totalGrade(15)
+                .build();
+
+        Subject subject = Subject.builder()
+                .id(subjectId)
+                .name("Math")
+                .stockQuantity(0) // 이미 모든 자리가 찬 경우
+                .gradePoint(3)
+                .professor("Jane")
+                .time(LocalTime.parse("10:00"))
+                .build();
+
+        when(memberDao.findById(memberId)).thenReturn(Optional.of(member));
+        when(subjectDao.findById(subjectId)).thenReturn(Optional.of(subject));
+        when(enrolmentDao.findByMemberAndSubject(member, subject)).thenReturn(Optional.empty());
+
+        PostEnrolmentRequest request = PostEnrolmentRequest.builder()
+                .memberId(memberId)
+                .subjectId(subjectId)
+                .build();
+
+        // When
+        Throwable throwable = catchThrowable(() -> enrolmentService.enrolment(request));
+
+        // Then
+        assertThat(throwable).isInstanceOf(LimitSubjectStockQuantityException.class);
+    }
 
 }
 
