@@ -4,10 +4,7 @@ import enrolment.enrolmentschool.src.domain.Member;
 import enrolment.enrolmentschool.src.domain.Subject;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiParam;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -20,6 +17,8 @@ import java.util.Vector;
 
 @Getter @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class PostSubjectRequest {
     @ApiParam(value="과목번호", example = "0")
     @ApiModelProperty(example = "12345678")

@@ -11,9 +11,8 @@ import java.time.LocalTime;
 @Entity
 @Builder
 @Getter
-@Setter
+
 @AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Subject {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="subject_id")
@@ -26,9 +25,14 @@ public class Subject {
     private int gradePoint;
     private int stockQuantity;//수강신청 가능 인원
 
+    public Subject() {
+
+    }
+
 //
 //    @Column(name="member_id")
 //    private String memberId;
+
 
     //비즈니스 로직//
     public void addStock(int quantity){
@@ -43,8 +47,4 @@ public class Subject {
     public void addSubject() {
         this.stockQuantity++;
     }
-
-
-
-
 }
